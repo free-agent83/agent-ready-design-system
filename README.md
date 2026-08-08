@@ -78,11 +78,19 @@ There are three theme slots:
 
 | Theme | Status | Description |
 |-------|--------|-------------|
-| `default` | Built | Light and dark modes are fully authored. This is the only theme active in the app and components. |
-| `contrast` | Placeholder | Source files exist but are empty. The build skips empty themes; no CSS is emitted. |
-| `portfolio` | Placeholder | Same as contrast. |
+| `default` | Built | Light and dark modes fully authored. Every text pair clears WCAG AA (4.5:1). This is the theme the app and components use. |
+| `contrast` | Built | A high-contrast alternative, light and dark. Every text pair clears WCAG AAA (7:1). Switch to it by setting `data-theme="contrast"`. |
+| `portfolio` | Placeholder | Source files exist but are empty. The build skips empty themes, so no CSS is emitted for it. |
 
-The contrast and portfolio slots exist to show how a second theme would be wired — add values to their source files and they flow through the build without touching any other code.
+`contrast` is a real second theme rather than a demonstration of one: it is authored entirely in its own token files and needed no change to any component, which is the property the multi-theme architecture exists to have. `portfolio` remains an empty slot, and the build's behaviour for an unauthored theme is enforced by a test.
+
+### Contrast is enforced, not audited
+
+`packages/tokens/tests/contrast.test.mjs` derives every surface-and-text pair from the token names, resolves both sides to real colours, and fails the build if a pair falls below the ratio its theme promises: AA for `default`, AAA for `contrast`. A new status role is covered the day it is added, because the pairs come from the tokens rather than from a list someone maintains.
+
+This is deliberately the same shape as the rest of the system. Unreadable text is not something to catch in review; it is something a binding cannot express. The gate found three real failures on its first run, all in the default light theme, each of which passed for large text and failed for body text.
+
+Contrast is the only accessibility property that can be settled in the token layer, because it depends on nothing but the two colours. Everything needing a rendered tree (accessible names, roles, ARIA) is gated in `packages/components/tests/a11y.test.tsx`, which runs axe over every story.
 
 ### Runtime theme switching
 
@@ -104,12 +112,16 @@ The token CSS uses `[data-theme="default"]` and `[data-theme="default"].dark` se
 
 ### Enforced quality gates
 
-Four automated checks run on every `npm test`:
+Six automated checks run on every `npm test`:
 
 - **Type-level gate** — `tsc --noEmit` verifies that component prop types are exactly what they claim to be. Off-brand prop values are rejected at compile time.
 - **Behavioral gate** — Vitest + Testing Library exercises DOM structure (disabled state, `asChild` rendering, attribute propagation).
 - **No-hardcoded-values gate** — a static analysis test rejects any component source file that contains raw pixel values or hex colour literals not annotated with `token-exempt`. All values must come from the token layer.
 - **Docs-coverage gate** — every component source file must have a sibling `COMPONENT.md`. Stable components must have no unchecked quality-checklist boxes.
+- **Contrast gate** — every surface-and-text token pair is resolved to real colours and measured. Below the ratio its theme promises (AA for `default`, AAA for `contrast`), the build fails. See "Contrast is enforced, not audited" above.
+- **Accessibility gate** — axe runs over every story of every component, catching missing accessible names, bad roles and ARIA, unlabelled controls and duplicate ids. It states its own limits: jsdom has no layout, so colour-contrast and target-size are disabled by name rather than passing silently, and stories are rendered but not played, so anything behind an interaction is out of its reach.
+
+These run in CI as well as locally (`.github/workflows/ci.yml`), alongside `undrift gate --strict` and a production build, so the contract holds for a change made in any editor rather than only inside an agent's loop.
 
 There is also a real-browser theme cascade proof in the `ThemeProof` Storybook story (run via `test:storybook`): it toggles `.dark` in a real browser and asserts that the button's computed background colour changes. This is the end-to-end proof that the token → Tailwind `@theme inline` → runtime cascade is working.
 
@@ -168,7 +180,7 @@ packages/
       primitive/          DTCG source: colours, dimensions, type
       theme/
         default/          light.tokens.json + dark.tokens.json (built)
-        contrast/         stubs (not yet built)
+        contrast/         high-contrast theme (AAA), light + dark
         portfolio/        stubs (not yet built)
     lib/                  build utilities (resolve.mjs, emit.mjs, color.mjs)
     dist/                 generated output — do not edit

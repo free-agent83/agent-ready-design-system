@@ -1,1 +1,112 @@
-{}
+{
+  "$type": "color",
+  "color": {
+    "semantic": {
+      "background": {
+        "$value": "{color.primitive.black}"
+      },
+      "foreground": {
+        "$value": "{color.primitive.white}"
+      },
+      "card": {
+        "$value": "{color.primitive.black}"
+      },
+      "card-foreground": {
+        "$value": "{color.primitive.white}"
+      },
+      "popover": {
+        "$value": "{color.primitive.black}"
+      },
+      "popover-foreground": {
+        "$value": "{color.primitive.white}"
+      },
+      "primary": {
+        "$value": "{color.primitive.indigo.300}"
+      },
+      "primary-foreground": {
+        "$value": "{color.primitive.black}"
+      },
+      "secondary": {
+        "$value": "{color.primitive.slate.800}"
+      },
+      "secondary-foreground": {
+        "$value": "{color.primitive.white}"
+      },
+      "muted": {
+        "$value": "{color.primitive.slate.900}"
+      },
+      "muted-foreground": {
+        "$value": "{color.primitive.slate.100}"
+      },
+      "accent": {
+        "$value": "{color.primitive.slate.800}"
+      },
+      "accent-foreground": {
+        "$value": "{color.primitive.white}"
+      },
+      "destructive": {
+        "$value": "{color.primitive.red.400}"
+      },
+      "destructive-foreground": {
+        "$value": "{color.primitive.black}"
+      },
+      "border": {
+        "$value": "{color.primitive.slate.300}"
+      },
+      "input": {
+        "$value": "{color.primitive.slate.300}"
+      },
+      "ring": {
+        "$value": "{color.primitive.indigo.300}"
+      },
+      "success": {
+        "$value": "{color.primitive.emerald.400}"
+      },
+      "success-foreground": {
+        "$value": "{color.primitive.black}"
+      },
+      "success-subtle": {
+        "$value": "{color.primitive.emerald.950}"
+      },
+      "warning": {
+        "$value": "{color.primitive.amber.400}"
+      },
+      "warning-foreground": {
+        "$value": "{color.primitive.black}"
+      },
+      "warning-subtle": {
+        "$value": "{color.primitive.amber.950}"
+      },
+      "danger": {
+        "$value": "{color.primitive.red.400}"
+      },
+      "danger-foreground": {
+        "$value": "{color.primitive.black}"
+      },
+      "danger-subtle": {
+        "$value": "{color.primitive.red.950}"
+      },
+      "info": {
+        "$value": "{color.primitive.blue.400}"
+      },
+      "info-foreground": {
+        "$value": "{color.primitive.black}"
+      },
+      "info-subtle": {
+        "$value": "{color.primitive.blue.950}"
+      },
+      "chart-1": { "$value": "{color.primitive.indigo.300}" },
+      "chart-2": { "$value": "{color.primitive.blue.400}" },
+      "chart-3": { "$value": "{color.primitive.emerald.400}" },
+      "chart-4": { "$value": "{color.primitive.amber.400}" },
+      "chart-5": { "$value": "{color.primitive.slate.100}" }
+    }
+  },
+  "shadow": {
+    "semantic": {
+      "card":    { "$value": "{shadow.primitive.elevation.sm}" },
+      "popover": { "$value": "{shadow.primitive.elevation.md}" },
+      "dialog":  { "$value": "{shadow.primitive.elevation.lg}" }
+    }
+  }
+}

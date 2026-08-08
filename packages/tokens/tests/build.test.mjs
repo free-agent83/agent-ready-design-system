@@ -21,8 +21,20 @@ test("dark is GENERATED FROM SOURCE — background rebinds to a different primit
   expect(bg(dark)).toMatch(/slate-900/);
   expect(bg(light)).not.toBe(bg(dark));
 });
+// Retargeted from `contrast` to `portfolio` when contrast was authored. The
+// property under test is "an empty theme source emits nothing", not "contrast
+// specifically is empty", so it needs to point at whichever slot is still a
+// stub. If portfolio is ever authored too, this test needs a purpose-built
+// empty fixture rather than another retarget.
 test("empty theme source emits NO scope (no phantom themes)", () => {
-  expect(css()).not.toMatch(/\[data-theme="contrast"\]/);
+  expect(css()).not.toMatch(/\[data-theme="portfolio"\]/);
+});
+
+test("an authored theme DOES emit both scopes", () => {
+  // The other half of the pair above: proves the skip is driven by the source
+  // being empty, not by the theme being anything other than `default`.
+  expect(css()).toMatch(/\[data-theme="contrast"\]\s*\{/);
+  expect(css()).toMatch(/\[data-theme="contrast"\]\.dark\s*\{/);
 });
 test("status roles emit for every status, each with a -foreground and -subtle surface", () => {
   const light = css().match(/\[data-theme="default"\]\s*\{([^}]*)\}/s)[1];

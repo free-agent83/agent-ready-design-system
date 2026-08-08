@@ -21,7 +21,7 @@
         "$value": "{color.primitive.slate.800}"
       },
       "primary": {
-        "$value": "{color.primitive.indigo.400}"
+        "$value": "{color.primitive.indigo.500}"
       },
       "primary-foreground": {
         "$value": "{color.primitive.white}"
@@ -36,7 +36,7 @@
         "$value": "{color.primitive.slate.100}"
       },
       "muted-foreground": {
-        "$value": "{color.primitive.slate.500}"
+        "$value": "{color.primitive.slate.600}"
       },
       "accent": {
         "$value": "{color.primitive.indigo.100}"
@@ -45,7 +45,7 @@
         "$value": "{color.primitive.slate.700}"
       },
       "destructive": {
-        "$value": "{color.primitive.red.500}"
+        "$value": "{color.primitive.red.700}"
       },
       "destructive-foreground": {
         "$value": "{color.primitive.white}"
