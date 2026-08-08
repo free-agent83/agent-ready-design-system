@@ -10,6 +10,20 @@ const meta = {
   argTypes: {
     size: { control: "select", options: ["sm", "md"] },
   },
+  args: { id: "checkbox-demo" },
+  // Every single-control story renders through here, so the stories
+  // demonstrate the pattern COMPONENT.md actually asks for ("pair every
+  // checkbox with a <label htmlFor={id}>") rather than a bare control nobody
+  // should copy. A story is read as an example whether or not it was written
+  // as one, and an unlabelled checkbox has no accessible name.
+  render: (args) => (
+    <div className="flex items-center gap-2">
+      <Checkbox {...args} />
+      <label htmlFor={args.id} className="text-sm text-foreground">
+        Email me about product updates
+      </label>
+    </div>
+  ),
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;
@@ -45,11 +59,13 @@ export const Indeterminate: Story = {
   },
 };
 
+// A size comparison rather than a form example, so aria-label is the right
+// tool here: there is no visible text these controls could be labelled by.
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-center gap-4">
-      <Checkbox size="sm" defaultChecked />
-      <Checkbox size="md" defaultChecked />
+      <Checkbox size="sm" defaultChecked aria-label="Small" />
+      <Checkbox size="md" defaultChecked aria-label="Medium" />
     </div>
   ),
 };

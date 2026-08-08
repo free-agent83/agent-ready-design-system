@@ -12,7 +12,11 @@ export interface ComboboxOption {
   disabled?: boolean;
 }
 
-export interface ComboboxProps {
+// Extends AriaAttributes so the trigger can be given an accessible name. The
+// props were a closed list, which silently dropped `aria-label`: the visible
+// text is the placeholder, and the placeholder is replaced by the selection, so
+// the control had no name at all once anyone used it. Caught by the a11y gate.
+export interface ComboboxProps extends React.AriaAttributes {
   options: ComboboxOption[];
   // Selected option value (controlled) — omit for uncontrolled use.
   value?: string;
@@ -45,6 +49,7 @@ export function Combobox({
   emptyText = "No results.",
   disabled,
   className,
+  ...aria
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
   const [internal, setInternal] = React.useState(defaultValue ?? "");
@@ -61,6 +66,7 @@ export function Combobox({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
+          {...aria}
           variant="outline"
           role="combobox"
           aria-expanded={open}

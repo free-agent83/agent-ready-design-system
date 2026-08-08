@@ -1,0 +1,61 @@
+name: CI
+
+# The same contract, enforced without an agent in the room.
+#
+# `.claude/settings.json` gates an agent's edits as they happen, which is the
+# fast feedback loop. This workflow is the slow one, and it is the answer to
+# "what happens on a team that does not use that editor": nothing changes. The
+# rules live in the repository, not in anyone's tooling, so a pull request from
+# any editor, or from a human who has never read AGENTS.md, meets the same gate
+# before it can merge.
+#
+# `gate --strict` is deliberately stricter than the hook. A declared `<Missing>`
+# gap is a success state during development and never blocks the dev loop, but
+# an unresolved gap is not something to release, so CI fails on it.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # `npm ci` installs from the lockfile exactly, so CI cannot silently pass
+      # on a dependency tree that no one else has.
+      - run: npm ci
+
+      # tokens + components + type-check + the gate's own suite.
+      # `pretest` compiles the token layer first, so this needs no manual step.
+      - run: npm test
+
+      # The design system's contract, applied to this repository's own source
+      # and to the app that consumes it.
+      - name: Check the design system contract
+        run: npm run gate -- --strict
+
+      - name: Build the consuming app
+        run: npm run build:web
+
+  # Advisory rather than blocking. A vulnerability in build tooling is worth
+  # knowing about on every run, but it is not a reason to stop a UI change
+  # merging, and a red X that everyone learns to ignore is worse than no check.
+  audit:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm audit --audit-level=high
