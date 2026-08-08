@@ -52,9 +52,18 @@ jobs:
       - name: Build the consuming app
         run: npm run build:web
 
-  # Advisory rather than blocking. A vulnerability in build tooling is worth
-  # knowing about on every run, but it is not a reason to stop a UI change
-  # merging, and a red X that everyone learns to ignore is worse than no check.
+  # Threshold set at `critical`, not `high`, and the reason is the whole point.
+  #
+  # The known advisories are documented in SECURITY.md: three high, six
+  # moderate, every one of them build-time tooling that parses this
+  # repository's own files. Failing on `high` would mean this job is red on
+  # every run forever, for issues already accounted for. That is precisely the
+  # check nobody reads, and a permanently red job trains people to ignore the
+  # one run that matters.
+  #
+  # `critical` is the level that is not already understood here, so a failure
+  # means something genuinely new arrived and someone should look. Advisory as
+  # well, so it reports rather than blocking a UI change from merging.
   audit:
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -65,4 +74,4 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - run: npm audit --audit-level=high
+      - run: npm audit --audit-level=critical

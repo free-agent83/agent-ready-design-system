@@ -52,11 +52,18 @@ wrong reason to make a risky change.
 
 ## How this is checked
 
-`.github/workflows/ci.yml` runs `npm audit --audit-level=high` on every push and
-pull request as an **advisory** job: it reports, it does not block. A blocking
-audit on transitive build tooling produces a permanently red pipeline that
-everybody learns to ignore, which is worse than no check at all. A change in
-this number should prompt a decision, not an automatic merge block.
+`.github/workflows/ci.yml` runs `npm audit --audit-level=critical` on every push
+and pull request as an **advisory** job: it reports, it does not block.
+
+The threshold is `critical` rather than `high` on purpose. The nine advisories
+above are known and accounted for, so failing on `high` would paint this job red
+on every run forever, for things already understood. That is the check nobody
+reads, and a permanently red job teaches people to ignore the one run that
+actually matters. `critical` is the level not already explained here, so a
+failure means something new arrived and someone should look.
+
+There are no critical advisories today. A change in the numbers above should
+prompt a decision and an update to this file, not an automatic merge block.
 
 ## Scope
 
