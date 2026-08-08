@@ -18,6 +18,13 @@ on:
     branches: [main]
   pull_request:
 
+# Nx keeps a background daemon to watch the file graph. It speeds up a local
+# edit-test loop and does nothing useful in a container that runs one command
+# and exits, where it is only another moving part between a green run and a red
+# one. Off everywhere in CI.
+env:
+  NX_DAEMON: "false"
+
 jobs:
   verify:
     runs-on: ubuntu-latest

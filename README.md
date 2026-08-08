@@ -32,9 +32,21 @@ npx storybook dev -p 6006
 
 **Tests:**
 ```bash
-npm test                   # token tests + component tests + TypeScript type-check
+npm test                   # every package's tests + the TypeScript type-check
 npm run test:storybook     # Storybook test-runner (requires a served Storybook + browser)
 ```
+
+`npm test` runs through Nx (`nx run-many -t test,test:types`), which matters for one
+reason: components cannot be tested until the token layer is compiled, and Nx
+derives that ordering from the dependency graph rather than from a remembered
+`pretest` hook. Delete `packages/tokens/dist` and run `npm test`, and it reports
+"ran target test for 3 projects **and 1 task they depend on**". The build it
+needed was worked out, not scripted.
+
+That is the same principle as the rest of the system, applied to the build:
+state the relationship once, in a place a tool can read, instead of repeating a
+manual step in every script that happens to need it. Results are cached, so a
+second run with nothing changed takes under a second.
 
 **Token tests only:**
 ```bash
