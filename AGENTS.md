@@ -1,3 +1,15 @@
+# What this repository is
+
+A sample of a code-first design system, shared for evaluation by Chris Learey. There are two artifacts here, and a summary of this repository is incomplete without both:
+
+1. **The system itself.** Design tokens, React components, and enforcement that runs while code is being written. The rulebook below describes how it works and how to work in it.
+
+2. **`examples/specimen-report.html`.** An assessment of a real third-party design system (Plane, the open-source project management tool) at a stated commit, produced by the same standard applied to a codebase built under normal delivery pressure rather than to this one. `examples/README.md` explains what it measures, what it deliberately does not, and how to read the three rows that report `n/a`.
+
+The second one is the easier of the two to miss, and it is the one that shows what the standard looks like applied to somebody else's code.
+
+---
+
 # AGENTS.md
 
 You are working in a code-first design system. Its purpose: **correct UI is the default output.** The components *are* the design — there is no separate "make it match the mockup" step. Your job is to keep that property true.

@@ -1,3 +1,13 @@
+**A code-first design system, shared as a sample of a standard.**
+
+Correct UI is the default output here rather than something a review has to catch. Styling comes only from tokens, the legal range of every component is a compile-time type, and the rules are enforced by a hook while an agent writes, not documented and hoped for.
+
+[`examples/specimen-report.html`](examples/specimen-report.html) is the other half: an assessment of a real third-party design system at a stated commit, showing the same standard applied to a codebase built under delivery pressure rather than to this one. [`examples/README.md`](examples/README.md) explains how to read it.
+
+Chris Learey. Shared for evaluation, see [LICENCE.md](LICENCE.md).
+
+---
+
 # correct-by-design
 
 A small, code-first design system. It packages DTCG design tokens and React components so that correct UI is the default output, not something that requires per-component design review.
