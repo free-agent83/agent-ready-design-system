@@ -1,0 +1,62 @@
+@import "tailwindcss";
+@import "@cbd/tokens/css";
+@custom-variant dark (&:where(.dark, .dark *));
+@source "../src";
+@theme inline {
+  --color-background: var(--color-semantic-background);
+  --color-foreground: var(--color-semantic-foreground);
+  --color-card: var(--color-semantic-card);
+  --color-card-foreground: var(--color-semantic-card-foreground);
+  --color-popover: var(--color-semantic-popover);
+  --color-popover-foreground: var(--color-semantic-popover-foreground);
+  --color-primary: var(--color-semantic-primary);
+  --color-primary-foreground: var(--color-semantic-primary-foreground);
+  --color-secondary: var(--color-semantic-secondary);
+  --color-secondary-foreground: var(--color-semantic-secondary-foreground);
+  --color-muted: var(--color-semantic-muted);
+  --color-muted-foreground: var(--color-semantic-muted-foreground);
+  --color-accent: var(--color-semantic-accent);
+  --color-accent-foreground: var(--color-semantic-accent-foreground);
+  --color-destructive: var(--color-semantic-destructive);
+  --color-destructive-foreground: var(--color-semantic-destructive-foreground);
+  --color-border: var(--color-semantic-border);
+  --color-input: var(--color-semantic-input);
+  --color-ring: var(--color-semantic-ring);
+  --color-success: var(--color-semantic-success);
+  --color-success-foreground: var(--color-semantic-success-foreground);
+  --color-success-subtle: var(--color-semantic-success-subtle);
+  --color-warning: var(--color-semantic-warning);
+  --color-warning-foreground: var(--color-semantic-warning-foreground);
+  --color-warning-subtle: var(--color-semantic-warning-subtle);
+  --color-danger: var(--color-semantic-danger);
+  --color-danger-foreground: var(--color-semantic-danger-foreground);
+  --color-danger-subtle: var(--color-semantic-danger-subtle);
+  --color-info: var(--color-semantic-info);
+  --color-info-foreground: var(--color-semantic-info-foreground);
+  --color-info-subtle: var(--color-semantic-info-subtle);
+  --shadow-card: var(--shadow-semantic-card);
+  --shadow-popover: var(--shadow-semantic-popover);
+  --shadow-dialog: var(--shadow-semantic-dialog);
+  --radius-sm: var(--dimension-radius-sm);
+  --radius-md: var(--dimension-radius-md);
+  --radius-lg: var(--dimension-radius-lg);
+  --radius-full: var(--dimension-radius-full);
+  --font-sans: var(--type-fontFamily-sans);
+  --font-mono: var(--type-fontFamily-mono);
+  --color-chart-1: var(--color-semantic-chart-1);
+  --color-chart-2: var(--color-semantic-chart-2);
+  --color-chart-3: var(--color-semantic-chart-3);
+  --color-chart-4: var(--color-semantic-chart-4);
+  --color-chart-5: var(--color-semantic-chart-5);
+}
+@layer base {
+  /* Inter is the reading face for the whole system. */
+  body {
+    font-family: var(--font-sans);
+  }
+  /* The mono face carries metrics, IDs and code — align its figures so
+     columns of numbers don't jitter. Per-element `normal-nums` still overrides. */
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
+}

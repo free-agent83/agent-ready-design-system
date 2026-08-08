@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>undrift assess: @plane/propel</title>
+</head>
+<body>
+  <header>
+    <h1>@plane/propel</h1>
+    <p class="subject">plane</p>
+  </header>
+
+  
+    <section class="headline">
+      <p><strong>Headline (Adherence, 4/5):</strong>
+        492 raw HTML elements used where a system component exists. Some screens render a raw HTML element in place of the system component built for it. This happens in 492 of 858 total uses of a replaceable element (57.3%), so its styling and behaviour can drift independently of the system.</p>
+    </section>
+
+  <table class="dimensions">
+    <thead>
+      <tr>
+        <th>#</th><th>Dimension</th><th></th><th>Score</th><th>Band</th>
+        
+        <th>Reason</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    <tr>
+      <td class="num">1</td>
+      <td class="title">Constraint</td>
+      <td class="bar" aria-hidden="true">─</td>
+      <td class="score">n/a</td>
+      <td class="band">not measured</td>
+      
+      <td class="reason">not computed by this instrument: scoring it requires parsing component APIs per framework, which is done in the deep audit of a single system rather than across a field</td>
+    </tr>
+    
+  
+    <tr>
+      <td class="num">2</td>
+      <td class="title">Single source</td>
+      <td class="bar" aria-hidden="true">█████</td>
+      <td class="score">5/5</td>
+      <td class="band">systematic</td>
+      
+      <td class="reason">698 distinct token(s) across 9 sources; 88% of colour/size references in system source resolve to a token; dark-mode handling is generated.</td>
+    </tr>
+    <tr class="findings-row"><td></td><td colspan="5"><ul class="findings">
+    <li class="finding finding-major">
+      <p><strong>100 hardcoded colour and size values in component source</strong>: The design system&#39;s own component source hardcodes colour and size values instead of referencing its own tokens. This happens in 100 of 813 total colour/size references in system source (12.3%), so an agent copying that file as a pattern copies the hardcoding along with it.</p>
+      <ul class="examples"><li><code>packages/propel/src/icons/state/helper.tsx:31</code><pre class="excerpt">#60646C</pre></li><li><code>packages/propel/src/emoji-icon-picker/helper.tsx:100</code><pre class="excerpt">#95999f</pre></li><li><code>packages/propel/src/scrollarea/scrollarea.tsx:38</code><pre class="excerpt">3px</pre></li><li><code>packages/propel/src/toast/toast.tsx:125</code><pre class="excerpt">350px</pre></li><li><code>packages/propel/src/emoji-icon-picker/icon/icon-root.tsx:43</code><pre class="excerpt">15px</pre></li></ul>
+    </li>
+    <li class="finding finding-major">
+      <p><strong>9 separate places tokens are declared</strong>: Design tokens are declared in more than one place in this repository&#39;s own authored source, so a value changed in one must be kept in agreement with the others by hand.</p>
+      <ul class="examples"><li><code>packages/tailwind-config/variables.css</code></li><li><code>packages/editor/src/styles/variables.css</code></li><li><code>apps/space/styles/globals.css</code></li><li><code>apps/web/styles/globals.css</code></li><li><code>packages/propel/src/styles/react-day-picker.css</code></li></ul>
+    </li></ul></td></tr>
+  
+    <tr>
+      <td class="num">3</td>
+      <td class="title">Legibility</td>
+      <td class="bar" aria-hidden="true">███░░</td>
+      <td class="score">3/5</td>
+      <td class="band">substantial</td>
+      
+      <td class="reason">45 of the 283 components found in system source carry documentation in some form (a head comment, a colocated doc artifact, or a docs/ entry). Scored from what is in the repository. Documentation held outside it (e.g. Confluence, Notion, Figma) cannot be detected and is neither credited nor penalised.</td>
+    </tr>
+    <tr class="findings-row"><td></td><td colspan="5"><ul class="findings">
+    <li class="finding finding-major">
+      <p><strong>238 undocumented components</strong>: Some components carry no documentation an agent could find. That is 238 of the 283 components found in system source, with no head comment on their own source, no colocated doc artifact matching their name, and no docs/ entry, so an agent must reverse-engineer their contract from implementation alone.</p>
+      <ul class="examples"><li><code>packages/propel/src/icons/brand/accenture-logo.tsx</code></li><li><code>packages/propel/src/icons/actions/index.ts</code></li><li><code>packages/propel/src/charts/pie-chart/active-shape.tsx</code></li><li><code>packages/propel/src/icons/activity-icon.tsx</code></li><li><code>packages/propel/src/icons/actions/add-circle-icon.tsx</code></li></ul>
+    </li></ul></td></tr>
+  
+    <tr>
+      <td class="num">4</td>
+      <td class="title">Fidelity</td>
+      <td class="bar" aria-hidden="true">─</td>
+      <td class="score">n/a</td>
+      <td class="band">not measured</td>
+      
+      <td class="reason">not computed by this instrument: scoring it requires parsing component APIs per framework, which is done in the deep audit of a single system rather than across a field</td>
+    </tr>
+    
+  
+    <tr>
+      <td class="num">5</td>
+      <td class="title">Adherence</td>
+      <td class="bar" aria-hidden="true">████░</td>
+      <td class="score">4/5</td>
+      <td class="band">strong</td>
+      
+      <td class="reason">2877 of 2892 application file(s) gated against the design system&#39;s own contract; 96.1% of style declarations resolve to a token.</td>
+    </tr>
+    <tr class="findings-row"><td></td><td colspan="5"><ul class="findings">
+    <li class="finding finding-critical">
+      <p><strong>35 components that duplicate one the system already ships</strong>: The application defines its own component under the same name as one the design system already ships. This happens for 35 of the 307 component names the design system exports, so an agent importing that name by convention can silently get the wrong implementation.</p>
+      <ul class="examples"><li><code>apps/admin/components/common/banner.tsx:14</code><pre class="excerpt">Banner</pre></li><li><code>apps/live/src/lib/pdf/icons.tsx:137</code><pre class="excerpt">ArchiveIcon</pre></li><li><code>apps/live/src/lib/pdf/icons.tsx:214</code><pre class="excerpt">CheckIcon</pre></li><li><code>apps/live/src/lib/pdf/icons.tsx:158</code><pre class="excerpt">GlobeIcon</pre></li><li><code>apps/live/src/lib/pdf/icons.tsx:45</code><pre class="excerpt">LinkIcon</pre></li></ul>
+    </li>
+    <li class="finding finding-major">
+      <p><strong>492 raw HTML elements used where a system component exists</strong>: Some screens render a raw HTML element in place of the system component built for it. This happens in 492 of 858 total uses of a replaceable element (57.3%), so its styling and behaviour can drift independently of the system.</p>
+      <ul class="examples"><li><code>apps/web/core/components/account/auth-forms/password.tsx:138</code><pre class="excerpt">&lt;button&gt;</pre></li><li><code>apps/admin/components/instance/setup-form.tsx:160</code><pre class="excerpt">&lt;input&gt;</pre></li><li><code>apps/web/core/components/account/auth-forms/unique-code.tsx:94</code><pre class="excerpt">&lt;input&gt;</pre></li><li><code>apps/web/core/components/pages/editor/ai/menu.tsx:163</code><pre class="excerpt">&lt;button&gt;</pre></li><li><code>packages/editor/src/core/extensions/custom-image/components/toolbar/full-screen/modal.tsx:216</code><pre class="excerpt">&lt;button&gt;</pre></li></ul>
+    </li>
+    <li class="finding finding-major">
+      <p><strong>306 hardcoded colour values</strong>: The application hardcodes colour values instead of using the design system&#39;s own tokens, so an agent editing nearby code has no signal that a token exists and will likely repeat the pattern.</p>
+      <ul class="examples"><li><code>packages/constants/src/chart.ts:51</code><pre class="excerpt">#6172E8</pre></li><li><code>apps/live/src/lib/pdf/colors.ts:20</code><pre class="excerpt">#5c5e63</pre></li><li><code>apps/live/src/lib/pdf/icons.tsx:15</code><pre class="excerpt">#ffffff</pre></li><li><code>packages/constants/src/themes.ts:28</code><pre class="excerpt">#DEE2E6</pre></li><li><code>packages/utils/src/theme/constants.ts:127</code><pre class="excerpt">#d6d6d8</pre></li></ul>
+    </li></ul></td></tr>
+  
+    <tr>
+      <td class="num">6</td>
+      <td class="title">Completeness</td>
+      <td class="bar" aria-hidden="true">─</td>
+      <td class="score">n/a</td>
+      <td class="band">not measured</td>
+      
+      <td class="reason">requires a live agent run: a gap only exists relative to something someone tried to build</td>
+    </tr>
+    
+  
+    </tbody>
+  </table>
+
+  <p class="overall">4 / 5 across 3 of 6 dimensions. n/a means "not measured", never "failed".</p>
+
+  
+    <p class="provenance">Assessed 2026-08-08 with undrift 0.1.0.
+      This describes the repository as it stood on that date, not as it stands today.</p>
+
+  
+
+  <script type="application/json" id="undrift-assess-payload">{"version":"1","generatedAt":"2026-08-08T07:53:37.002Z","toolVersion":"0.1.0","system":"@plane/propel","subject":{"kind":"workspace","typesEntry":null,"tsconfigPath":"packages/propel/tsconfig.json","tokenCount":698,"tokenSources":[{"path":"packages/propel/src/styles/react-day-picker.css","kind":"css","count":10},{"path":"apps/admin/styles/globals.css","kind":"css","count":2},{"path":"apps/space/styles/globals.css","kind":"css","count":18},{"path":"apps/web/styles/emoji.css","kind":"css","count":6},{"path":"apps/web/styles/globals.css","kind":"css","count":18},{"path":"packages/editor/src/styles/drag-drop.css","kind":"css","count":1},{"path":"packages/editor/src/styles/variables.css","kind":"css","count":60},{"path":"packages/tailwind-config/animations.css","kind":"css","count":7},{"path":"packages/tailwind-config/variables.css","kind":"css","count":612}],"componentNames":307,"systemFiles":352,"appFiles":2892,"docArtifacts":1,"agentContext":["AGENTS.md"],"notes":["workspace candidates (component-exporting members): @plane/propel (5 internal dependents), @plane/ui (4 internal dependents), @plane/editor (3 internal dependents), @plane/i18n (2 internal dependents), admin (0 internal dependents), live (0 internal dependents), space (0 internal dependents), web (0 internal dependents). Chose @plane/propel.","excluded 230 custom properties in @theme inline blocks across 1 stylesheet(s): Tailwind v4 alias layer, emits no runtime custom properties. Plain @theme blocks (which do emit custom properties) were kept.","token sources (merged, later wins): packages/propel/src/styles/react-day-picker.css (css, 10), apps/admin/styles/globals.css (css, 2), apps/space/styles/globals.css (css, 18), apps/web/styles/emoji.css (css, 6), apps/web/styles/globals.css (css, 18), packages/editor/src/styles/drag-drop.css (css, 1), packages/editor/src/styles/variables.css (css, 60), packages/tailwind-config/animations.css (css, 7), packages/tailwind-config/variables.css (css, 612). 698 distinct tokens.","appFiles: 2877 of 2892 are parseable by the TS reader; 15 other-format file(s) (vue/svelte/templates) are collected so coverage is reported honestly rather than claimed absent","component names scanned from 352 authored source file(s): no .d.ts entry to resolve"]},"dimensions":[{"id":"constraint","number":1,"title":"Constraint","question":"Is wrong output structurally possible?","status":"n/a","score":null,"label":"not measured","index":null,"reason":"not computed by this instrument: scoring it requires parsing component APIs per framework, which is done in the deep audit of a single system rather than across a field","measures":{},"findings":[]},{"id":"single-source","number":2,"title":"Single source","question":"Does a visual decision live in exactly one place?","status":"scored","score":5,"label":"systematic","index":0.9384993849938499,"reason":"698 distinct token(s) across 9 sources; 88% of colour/size references in system source resolve to a token; dark-mode handling is generated.","measures":{"tokenCount":698,"authoredTokenSourceCount":9,"tokenSourceCount":9,"tokenSources":[{"path":"packages/propel/src/styles/react-day-picker.css","kind":"css","count":10},{"path":"apps/admin/styles/globals.css","kind":"css","count":2},{"path":"apps/space/styles/globals.css","kind":"css","count":18},{"path":"apps/web/styles/emoji.css","kind":"css","count":6},{"path":"apps/web/styles/globals.css","kind":"css","count":18},{"path":"packages/editor/src/styles/drag-drop.css","kind":"css","count":1},{"path":"packages/editor/src/styles/variables.css","kind":"css","count":60},{"path":"packages/tailwind-config/animations.css","kind":"css","count":7},{"path":"packages/tailwind-config/variables.css","kind":"css","count":612}],"tokenRefs":713,"rawLiterals":100,"themeGeneration":"generated"},"findings":[{"dimension":"single-source","severity":"major","statement":"The design system's own component source hardcodes colour and size values instead of referencing its own tokens. This happens in 100 of 813 total colour/size references in system source (12.3%), so an agent copying that file as a pattern copies the hardcoding along with it.","count":100,"unit":"hardcoded colour and size values in component source","examples":[{"file":"packages/propel/src/icons/state/helper.tsx","line":31,"excerpt":"#60646C"},{"file":"packages/propel/src/emoji-icon-picker/helper.tsx","line":100,"excerpt":"#95999f"},{"file":"packages/propel/src/scrollarea/scrollarea.tsx","line":38,"excerpt":"3px"},{"file":"packages/propel/src/toast/toast.tsx","line":125,"excerpt":"350px"},{"file":"packages/propel/src/emoji-icon-picker/icon/icon-root.tsx","line":43,"excerpt":"15px"}]},{"dimension":"single-source","severity":"major","statement":"Design tokens are declared in more than one place in this repository's own authored source, so a value changed in one must be kept in agreement with the others by hand.","count":9,"unit":"separate places tokens are declared","examples":[{"file":"packages/tailwind-config/variables.css","line":null,"excerpt":"css, 612 token(s)"},{"file":"packages/editor/src/styles/variables.css","line":null,"excerpt":"css, 60 token(s)"},{"file":"apps/space/styles/globals.css","line":null,"excerpt":"css, 18 token(s)"},{"file":"apps/web/styles/globals.css","line":null,"excerpt":"css, 18 token(s)"},{"file":"packages/propel/src/styles/react-day-picker.css","line":null,"excerpt":"css, 10 token(s)"}]}]},{"id":"legibility","number":3,"title":"Legibility","question":"Can an agent navigate it?","status":"scored","score":3,"label":"substantial","index":0.5269434628975266,"reason":"45 of the 283 components found in system source carry documentation in some form (a head comment, a colocated doc artifact, or a docs/ entry). Scored from what is in the repository. Documentation held outside it (e.g. Confluence, Notion, Figma) cannot be detected and is neither credited nor penalised.","measures":{"components":283,"documentedComponents":45,"documentedProps":null,"colocatedArtifacts":37,"agentContextFiles":1,"coverage":{"total":391,"read":352,"byExtension":{".ts":74,".js":1,".tsx":277},"unreadable":[]}},"findings":[{"dimension":"legibility","severity":"major","statement":"Some components carry no documentation an agent could find. That is 238 of the 283 components found in system source, with no head comment on their own source, no colocated doc artifact matching their name, and no docs/ entry, so an agent must reverse-engineer their contract from implementation alone.","count":238,"unit":"undocumented components","examples":[{"file":"packages/propel/src/icons/brand/accenture-logo.tsx","line":null,"excerpt":""},{"file":"packages/propel/src/icons/actions/index.ts","line":null,"excerpt":""},{"file":"packages/propel/src/charts/pie-chart/active-shape.tsx","line":null,"excerpt":""},{"file":"packages/propel/src/icons/activity-icon.tsx","line":null,"excerpt":""},{"file":"packages/propel/src/icons/actions/add-circle-icon.tsx","line":null,"excerpt":""}]}]},{"id":"fidelity","number":4,"title":"Fidelity","question":"Do the docs describe the code that exists?","status":"n/a","score":null,"label":"not measured","index":null,"reason":"not computed by this instrument: scoring it requires parsing component APIs per framework, which is done in the deep audit of a single system rather than across a field","measures":{},"findings":[]},{"id":"adherence","number":5,"title":"Adherence","question":"Is the system actually being used?","status":"scored","score":4,"label":"strong","index":0.8274804605418816,"reason":"2877 of 2892 application file(s) gated against the design system's own contract; 96.1% of style declarations resolve to a token.","measures":{"appFiles":2892,"appLines":262843,"declarations":{"total":14438,"resolved":13875},"compliancePct":96.1,"colourViolations":306,"rawElementHits":492,"systemComponentUsages":366,"anyUiFiles":777,"foreignUiFiles":0,"duplicateComponents":35,"adherenceSource":"unknown","coverage":{"total":2892,"read":2877,"byExtension":{".html":15},"unreadable":15}},"findings":[{"dimension":"adherence","severity":"critical","statement":"The application defines its own component under the same name as one the design system already ships. This happens for 35 of the 307 component names the design system exports, so an agent importing that name by convention can silently get the wrong implementation.","count":35,"unit":"components that duplicate one the system already ships","examples":[{"file":"apps/admin/components/common/banner.tsx","line":14,"excerpt":"Banner"},{"file":"apps/live/src/lib/pdf/icons.tsx","line":137,"excerpt":"ArchiveIcon"},{"file":"apps/live/src/lib/pdf/icons.tsx","line":214,"excerpt":"CheckIcon"},{"file":"apps/live/src/lib/pdf/icons.tsx","line":158,"excerpt":"GlobeIcon"},{"file":"apps/live/src/lib/pdf/icons.tsx","line":45,"excerpt":"LinkIcon"}]},{"dimension":"adherence","severity":"major","statement":"Some screens render a raw HTML element in place of the system component built for it. This happens in 492 of 858 total uses of a replaceable element (57.3%), so its styling and behaviour can drift independently of the system.","count":492,"unit":"raw HTML elements used where a system component exists","examples":[{"file":"apps/web/core/components/account/auth-forms/password.tsx","line":138,"excerpt":"\u003cbutton>"},{"file":"apps/admin/components/instance/setup-form.tsx","line":160,"excerpt":"\u003cinput>"},{"file":"apps/web/core/components/account/auth-forms/unique-code.tsx","line":94,"excerpt":"\u003cinput>"},{"file":"apps/web/core/components/pages/editor/ai/menu.tsx","line":163,"excerpt":"\u003cbutton>"},{"file":"packages/editor/src/core/extensions/custom-image/components/toolbar/full-screen/modal.tsx","line":216,"excerpt":"\u003cbutton>"}]},{"dimension":"adherence","severity":"major","statement":"The application hardcodes colour values instead of using the design system's own tokens, so an agent editing nearby code has no signal that a token exists and will likely repeat the pattern.","count":306,"unit":"hardcoded colour values","examples":[{"file":"packages/constants/src/chart.ts","line":51,"excerpt":"#6172E8"},{"file":"apps/live/src/lib/pdf/colors.ts","line":20,"excerpt":"#5c5e63"},{"file":"apps/live/src/lib/pdf/icons.tsx","line":15,"excerpt":"#ffffff"},{"file":"packages/constants/src/themes.ts","line":28,"excerpt":"#DEE2E6"},{"file":"packages/utils/src/theme/constants.ts","line":127,"excerpt":"#d6d6d8"}]}]},{"id":"completeness","number":6,"title":"Completeness","question":"Does the system contain what teams actually need?","status":"n/a","score":null,"label":"not measured","index":null,"reason":"requires a live agent run: a gap only exists relative to something someone tried to build","measures":{},"findings":[]}],"headline":{"dimension":"adherence","severity":"major","statement":"Some screens render a raw HTML element in place of the system component built for it. This happens in 492 of 858 total uses of a replaceable element (57.3%), so its styling and behaviour can drift independently of the system.","count":492,"unit":"raw HTML elements used where a system component exists","examples":[{"file":"apps/web/core/components/account/auth-forms/password.tsx","line":138,"excerpt":"\u003cbutton>"},{"file":"apps/admin/components/instance/setup-form.tsx","line":160,"excerpt":"\u003cinput>"},{"file":"apps/web/core/components/account/auth-forms/unique-code.tsx","line":94,"excerpt":"\u003cinput>"},{"file":"apps/web/core/components/pages/editor/ai/menu.tsx","line":163,"excerpt":"\u003cbutton>"},{"file":"packages/editor/src/core/extensions/custom-image/components/toolbar/full-screen/modal.tsx","line":216,"excerpt":"\u003cbutton>"}],"dimensionTitle":"Adherence","dimensionScore":4,"dimensionLabel":"strong"},"reference":null,"overall":{"mean":4,"scoredCount":3,"total":6},"bands":[{"min":0.85,"score":5,"label":"systematic"},{"min":0.7,"score":4,"label":"strong"},{"min":0.5,"score":3,"label":"substantial"},{"min":0.3,"score":2,"label":"partial"},{"min":0.1,"score":1,"label":"incidental"},{"min":0,"score":0,"label":"absent"}],"rootName":"plane"}</script>
+</body>
+</html>

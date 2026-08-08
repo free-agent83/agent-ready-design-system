@@ -1,0 +1,50 @@
+/* The components package's stylesheet brings Tailwind, the token CSS, the
+   @custom-variant dark, the @theme role mappings, and @source for the component
+   class strings — so the app inherits the whole "correct by design" token layer
+   from one import. */
+/* Fumadocs chrome must be imported BEFORE the components stylesheet: @import
+   rules have to precede non-@import rules, and @cbd/components/css expands to
+   @theme/@source (non-imports), which would otherwise invalidate these. */
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+@import "@cbd/components/css";
+
+/* Scan the app's own markup AND the component source for utility classes.
+   The component class strings live in @cbd/components/src; Tailwind won't pick
+   them up through the node_modules symlink automatically, so point at the real
+   package source explicitly. */
+@source "../app";
+@source "../components";
+@source "../../../packages/components/src";
+
+/* Re-point the font-family tokens at the next/font-loaded faces (their CSS
+   variables), so `font-sans`/`font-mono` resolve to the self-hosted, no-layout-
+   shift Inter + JetBrains Mono rather than a system fallback. */
+:root {
+  --type-fontFamily-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --type-fontFamily-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Dogfood: remap Fumadocs's --color-fd-* chrome variables onto our token roles,
+   in both light and dark, so the docs site is itself "correct by design". Our
+   roles already rebind under .dark via the token cascade, and re-asserting the
+   map under .dark overrides Fumadocs's own dark values. Fonts follow too. */
+:root,
+.dark {
+  --color-fd-background: var(--color-background);
+  --color-fd-foreground: var(--color-foreground);
+  --color-fd-muted: var(--color-muted);
+  --color-fd-muted-foreground: var(--color-muted-foreground);
+  --color-fd-popover: var(--color-popover);
+  --color-fd-popover-foreground: var(--color-popover-foreground);
+  --color-fd-card: var(--color-card);
+  --color-fd-card-foreground: var(--color-card-foreground);
+  --color-fd-border: var(--color-border);
+  --color-fd-primary: var(--color-primary);
+  --color-fd-primary-foreground: var(--color-primary-foreground);
+  --color-fd-secondary: var(--color-secondary);
+  --color-fd-secondary-foreground: var(--color-secondary-foreground);
+  --color-fd-accent: var(--color-accent);
+  --color-fd-accent-foreground: var(--color-accent-foreground);
+  --color-fd-ring: var(--color-ring);
+}

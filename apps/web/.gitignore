@@ -1,0 +1,7 @@
+/.next/
+/.source/
+/next-env.d.ts
+
+# Generated from packages/components CATALOG.md + COMPONENT.md (see scripts/gen-docs.mjs)
+/content/docs/components/
+/content/docs/meta.json

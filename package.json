@@ -1,0 +1,36 @@
+{
+  "name": "correct-by-design",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build:tokens": "npm -w @cbd/tokens run build",
+    "prepare": "npm run build:tokens",
+    "test:tokens": "npm -w @cbd/tokens run test",
+    "test:components": "npm -w @cbd/components run test",
+    "test:types": "npm -w @cbd/components run test:types",
+    "test:storybook": "npm -w @cbd/components run test:storybook",
+    "test:undrift": "npm -w undrift run test",
+    "pretest": "npm run build:tokens",
+    "test": "npm run test:tokens && npm run test:components && npm run test:types && npm run test:undrift",
+    "gate": "node packages/undrift/bin/undrift.mjs gate",
+    "audit": "node packages/undrift/bin/undrift.mjs audit",
+    "pregate": "npm run build:tokens",
+    "blast-radius": "node scripts/blast-radius.mjs",
+    "predev": "npm run build:tokens",
+    "dev": "npm -w @cbd/web run dev",
+    "build:web": "npm -w @cbd/web run build"
+  },
+  "devDependencies": {
+    "nx": "^22.6.0",
+    "vitest": "^3.0.0",
+    "culori": "^4.0.0",
+    "typescript": "~5.9.0"
+  }
+}

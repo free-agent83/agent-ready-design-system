@@ -1,0 +1,36 @@
+{
+  "name": "@cbd/web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "postinstall": "fumadocs-mdx",
+    "gen:docs": "node scripts/gen-docs.mjs",
+    "predev": "npm -w @cbd/tokens run build && npm run gen:docs",
+    "dev": "next dev -p 5200",
+    "prebuild": "npm -w @cbd/tokens run build && npm run gen:docs",
+    "build": "next build",
+    "start": "next start -p 5200"
+  },
+  "dependencies": {
+    "@cbd/components": "*",
+    "@cbd/tokens": "*",
+    "@tanstack/react-table": "^8.21.3",
+    "@types/mdx": "^2.0.14",
+    "date-fns": "^4.4.0",
+    "fumadocs-core": "^16.10.7",
+    "fumadocs-mdx": "^15.0.13",
+    "fumadocs-ui": "^16.10.7",
+    "next": "^16",
+    "react": "^19",
+    "react-dom": "^19",
+    "recharts": "^2.15.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tailwindcss": "^4",
+    "typescript": "~5.9"
+  }
+}

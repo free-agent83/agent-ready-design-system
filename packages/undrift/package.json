@@ -1,0 +1,24 @@
+{
+  "name": "undrift",
+  "version": "0.1.0",
+  "description": "The enforcement layer for agent-ready design systems. Audits repos and gates agent-generated UI against a design system's own contract — so the rules are unskippable, not advisory.",
+  "type": "module",
+  "private": true,
+  "bin": { "undrift": "./bin/undrift.mjs" },
+  "files": ["bin", "hooks", "src", "templates", "schema.json", "README.md"],
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "culori": "^4.0.0",
+    "fast-glob": "^3.3.3",
+    "typescript": "~5.9.0"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0"
+  },
+  "engines": { "node": ">=20.0.0" }
+}

@@ -1,0 +1,26 @@
+node_modules
+dist
+storybook-static
+.nx
+*.log
+.DS_Store
+
+# undrift hook scratch state (attempt counters). Decisions are NOT scratch —
+# undrift.decisions.json is committed on purpose.
+.undrift/
+
+# assess fixture subjects are trimmed extracts of REAL design systems, and the
+# parts that matter live in directories the rules above ignore: the vendored
+# fixture is all `dist/` (its entry .d.ts and its stylesheet, the token source),
+# and the source-only fixtures need a minimal `node_modules` or the TypeScript
+# checker cannot resolve a single component. Without these negations `git add`
+# drops them silently and the suite only passes on the machine that built it.
+!packages/undrift/tests/corpus/subjects/**
+
+# …but junk inside the negated fixture tree stays ignored. The negation above
+# re-includes EVERYTHING under subjects/, which would otherwise let .DS_Store
+# or a stray .undrift/ scratch dir (assess runs against these very subjects)
+# ride into a `git add -A`.
+packages/undrift/tests/corpus/subjects/**/.DS_Store
+packages/undrift/tests/corpus/subjects/**/*.log
+packages/undrift/tests/corpus/subjects/**/.undrift/
