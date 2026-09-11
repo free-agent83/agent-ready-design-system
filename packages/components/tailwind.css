@@ -48,7 +48,23 @@
   --color-chart-3: var(--color-semantic-chart-3);
   --color-chart-4: var(--color-semantic-chart-4);
   --color-chart-5: var(--color-semantic-chart-5);
+  /* The layout layer (packages/tokens/src/semantic/layout.tokens.json): each
+     spacing key names a structural decision, so `p-page-inset` and
+     `gap-control-gap` exist and `p-7` for a page inset does not have to. */
+  --spacing-page-inset: var(--layout-page-inset);
+  --spacing-page-gap: var(--layout-page-gap);
+  --spacing-section-inset: var(--layout-section-inset);
+  --spacing-section-gap: var(--layout-section-gap);
+  --spacing-group-gap: var(--layout-group-gap);
+  --spacing-control-gap: var(--layout-control-gap);
+  --container-page-max: var(--layout-page-max);
 }
+/* A grid whose columns collapse at a token minimum. One utility per
+   layout.grid.min.* rung; there is deliberately no column-count form. */
+@utility grid-auto-xs { grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-min-xs), 1fr)); }
+@utility grid-auto-sm { grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-min-sm), 1fr)); }
+@utility grid-auto-md { grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-min-md), 1fr)); }
+@utility grid-auto-lg { grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-min-lg), 1fr)); }
 @layer base {
   /* Inter is the reading face for the whole system. */
   body {

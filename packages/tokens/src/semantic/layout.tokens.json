@@ -1,0 +1,62 @@
+{
+  "$type": "dimension",
+  "layout": {
+    "$description": "The compositional contract's numbers. Every value aliases the primitive scale; nothing here is a new raw value. Each token names a STRUCTURAL decision (a page inset is not a control gap), so an agent never picks a rung off a flat scale for a job the scale does not name.",
+    "page": {
+      "inset": {
+        "$value": "{dimension.spacing.8}",
+        "$description": "Distance from the viewport edge to page content. Never zero: content touching the edge is a boundary failure."
+      },
+      "gap": {
+        "$value": "{dimension.spacing.12}",
+        "$description": "Vertical distance between top-level page sections."
+      },
+      "max": {
+        "$value": "{dimension.measure.xl}",
+        "$description": "The widest a page's content column may grow."
+      }
+    },
+    "section": {
+      "inset": {
+        "$value": "{dimension.spacing.6}",
+        "$description": "Padding inside a section that sits on its own surface."
+      },
+      "gap": {
+        "$value": "{dimension.spacing.6}",
+        "$description": "Distance between groups within one section."
+      }
+    },
+    "group": {
+      "gap": {
+        "$value": "{dimension.spacing.4}",
+        "$description": "Distance between related controls in a group."
+      }
+    },
+    "control": {
+      "gap": {
+        "$value": "{dimension.spacing.2}",
+        "$description": "Distance between a control and its own label or hint."
+      }
+    },
+    "grid": {
+      "min": {
+        "xs": {
+          "$value": "{dimension.measure.xs}",
+          "$description": "The narrowest a grid column may become before the grid collapses: a stat tile."
+        },
+        "sm": {
+          "$value": "{dimension.measure.sm}",
+          "$description": "A card."
+        },
+        "md": {
+          "$value": "{dimension.measure.md}",
+          "$description": "A form group."
+        },
+        "lg": {
+          "$value": "{dimension.measure.lg}",
+          "$description": "A panel."
+        }
+      }
+    }
+  }
+}

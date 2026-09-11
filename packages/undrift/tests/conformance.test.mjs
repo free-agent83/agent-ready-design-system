@@ -77,8 +77,8 @@ test.each([
   ["unitless numeric style", "const s = <div style={{ opacity: 1, zIndex: 10 }} />;"],
   ["system component", 'import { Button } from "@acme/ds";'],
   ["type-only import of a props type", 'import type { ButtonProps } from "@acme/ds";'],
-  // Compose freely from legal atoms — this is the behaviour undrift exists to
-  // make cheap, and it must never read as drift.
+  // Compose freely from legal primitives — this is the behaviour undrift exists
+  // to make cheap, and it must never read as drift.
   [
     "a new component composed from existing ones",
     'import { Card, Badge } from "@acme/ds";\nexport const Stat = () => (<Card className="p-4"><Badge>New</Badge></Card>);',

@@ -2,21 +2,33 @@
 // the repo rather than asserted. Each metric returns { id, title, pass,
 // summary, detail } so the report reads as findings, not opinions.
 import { readFileSync, existsSync, readdirSync } from "node:fs";
-import { resolve, join } from "node:path";
+import { resolve, join, basename } from "node:path";
 import fg from "fast-glob";
 import { gateProfile } from "./gate.mjs";
 
-/** Component dirs = children of componentsRoot tiers that carry a COMPONENT.md or source. */
+/**
+ * Component dirs = any directory under componentsRoot holding a COMPONENT.md or a
+ * component source file. The walk is depth-agnostic on purpose: a repo may keep
+ * components flat, or nest them under groupings of its own choosing, and neither
+ * shape is a property this audit has any business requiring.
+ */
 function componentDirs(contract) {
   if (!contract.componentsRoot || !existsSync(contract.componentsRoot)) return [];
   const dirs = [];
-  for (const tier of readdirSync(contract.componentsRoot, { withFileTypes: true })) {
-    if (!tier.isDirectory()) continue;
-    const tierPath = join(contract.componentsRoot, tier.name);
-    for (const entry of readdirSync(tierPath, { withFileTypes: true })) {
-      if (entry.isDirectory()) dirs.push({ tier: tier.name, name: entry.name, path: join(tierPath, entry.name) });
+  const walk = (dirPath, relName) => {
+    const entries = readdirSync(dirPath, { withFileTypes: true });
+    const isComponent =
+      entries.some((e) => e.isFile() && e.name === "COMPONENT.md") ||
+      fg.sync("!(*.stories|*.test|*.test-d).tsx", { cwd: dirPath }).length > 0;
+    if (isComponent) {
+      dirs.push({ name: relName ?? basename(dirPath), path: dirPath });
+      return; // a component's own subdirectories are its business, not ours
     }
-  }
+    for (const entry of entries) {
+      if (entry.isDirectory()) walk(join(dirPath, entry.name), entry.name);
+    }
+  };
+  walk(contract.componentsRoot, null);
   return dirs;
 }
 
@@ -39,7 +51,7 @@ export function runAudit(contract) {
       title: "Illegal states are unrepresentable (type-level tests)",
       pass,
       summary: `${withTypeTests.length}/${dirs.length} components carry *.test-d.ts type-level tests`,
-      detail: dirs.filter((d) => !withTypeTests.includes(d)).map((d) => `${d.tier}/${d.name}: no *.test-d.ts`),
+      detail: dirs.filter((d) => !withTypeTests.includes(d)).map((d) => `${d.name}: no *.test-d.ts`),
     });
   }
 
@@ -91,7 +103,7 @@ export function runAudit(contract) {
       title: "Agent-readable docs coverage (COMPONENT.md per component)",
       pass,
       summary: `${dirs.length - missing.length}/${dirs.length} components carry a colocated COMPONENT.md`,
-      detail: missing.map((d) => `${d.tier}/${d.name}: missing COMPONENT.md`),
+      detail: missing.map((d) => `${d.name}: missing COMPONENT.md`),
     });
   }
 

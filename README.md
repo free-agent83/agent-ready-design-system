@@ -67,7 +67,7 @@ npm run blast-radius
 
 To pick a component, start at `packages/components/CATALOG.md`. It is a one-table index of every component: what it is for and what it is explicitly not for. Read it first so you reach for the right component without having to open source files.
 
-For a specific component, open `packages/components/src/components/<atom|molecule>/<name>/COMPONENT.md`. It contains props, for/not-for guidance, best practices, and a quality checklist. The corresponding `<name>.tsx` is the implementation; `<name>.stories.tsx` is the living documentation in Storybook.
+For a specific component, open `packages/components/src/components/<name>/COMPONENT.md`. It contains props, for/not-for guidance, best practices, and a quality checklist. The corresponding `<name>.tsx` is the implementation; `<name>.stories.tsx` is the living documentation in Storybook.
 
 For token decisions, see `docs/architecture/architecture.md`.
 
@@ -201,7 +201,7 @@ packages/
   components/
     src/
       components/
-        atoms/button/     Button (reference component)
+        button/           Button (reference component; one flat dir per component)
     tailwind.css          Tailwind v4 theme wiring
     CATALOG.md            component index (pick a component here)
 apps/

@@ -26,7 +26,7 @@ import {
 // before the harness runs it 54 times. Every requirement in the task text is
 // implemented; the two planted gaps (a time-range + timezone control, and a
 // metered usage indicator with a threshold state) are composed from primitives
-// because the system ships no dedicated atom for either, which is exactly the
+// because the system ships no dedicated component for either, which is exactly the
 // pressure the trial measures.
 
 const CATEGORIES = [

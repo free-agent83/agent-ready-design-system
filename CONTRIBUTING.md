@@ -10,17 +10,17 @@ The system encodes design decisions so they can't be got wrong by accident. Conc
 - **The legal range of a component lives in its prop types.** Variants are a closed union, enforced at compile time — an off-spec variant does not compile.
 - **Agents propose, humans ratify.** Anything that is a *design* decision (a new token, a new semantic role, a new component, a new variant) needs a human ruling and, when accepted, an ADR. Implementation details (writing the tests, wiring the gate, following an existing pattern) do not.
 
-The reference implementation of every convention below is **Button** (`packages/components/src/components/atoms/button/`). When unsure, copy Button.
+The reference implementation of every convention below is **Button** (`packages/components/src/components/button/`). When unsure, copy Button.
 
 ## Adding a component
 
-Create `packages/components/src/components/<tier>/<name>/` (`<tier>` = `atoms` | `molecules` | `organisms` | `templates`) and add these files:
+Create `packages/components/src/components/<name>/` and add these files. The directory is flat: there is no tier, level or category in the path, because a component's shape is not a fact an agent should have to guess before it can find the file.
 
 ### 1. `<name>.tsx` — the implementation
 - Use **`cva`** for the variant matrix, with `defaultVariants`. Variant keys are a closed union — that's what makes illegal states uncompilable.
-  - **Multi-element components** (a control with a separately-styled sub-element, e.g. Switch's track + thumb, or a molecule's trigger + content + item) get **one `cva` per styled element**, all keyed off the **same** variant prop, so the parts stay in lockstep. Derive the public `VariantProps` from the root element's `cva` (e.g. `VariantProps<typeof switchTrack>`). See `switch/switch.tsx`.
+  - **Multi-element components** (a control with a separately-styled sub-element, e.g. Switch's track + thumb, or a compositional trigger + content + item) get **one `cva` per styled element**, all keyed off the **same** variant prop, so the parts stay in lockstep. Derive the public `VariantProps` from the root element's `cva` (e.g. `VariantProps<typeof switchTrack>`). See `switch/switch.tsx`.
 - **Token utilities only.** Use the semantic utilities wired in `tailwind.css` (`bg-background`, `bg-primary`, `text-primary-foreground`, `hover:bg-primary/90`, `hover:bg-accent`, `border-input`, `bg-muted`, `text-muted-foreground`, `shadow-popover`). No raw hex/px.
-- Merge classes with **`cn`** from the package's `lib/utils` via a **relative import** (from a component that's `cn(component({ variant, size }), className)`). Component source uses relative imports (not a `@/` alias) so the package is consumable by any bundler with zero alias config — the reference is `../../../lib/utils` from `src/components/<tier>/<name>/<name>.tsx`.
+- Merge classes with **`cn`** from the package's `lib/utils` via a **relative import** (from a component that's `cn(component({ variant, size }), className)`). Component source uses relative imports (not a `@/` alias) so the package is consumable by any bundler with zero alias config — the reference is `../../lib/utils` from `src/components/<name>/<name>.tsx`.
 - For "render as another element", use Radix Slot: `import { Slot } from "radix-ui"` then `const Comp = asChild ? Slot.Root : "<tag>"`.
 - **`"use client"` for interactive components (React Server Components).** Any component that uses React state/context/refs, an event handler as its own behaviour, or a client-only library (Radix, cmdk, react-day-picker, `@tanstack/react-table`) must start with the `"use client"` directive, so a server component can import it (and the barrel) without the module eagerly evaluating `createContext`/hooks on the server. Purely presentational, hook-free components (Button, Badge, Card, Input, Table, Breadcrumb) stay server-capable — no directive. The directive is a no-op for Vitest/Storybook/`tsc`, so gates are unaffected.
 - Set inspectable data attributes: `data-slot="<name>"`, `data-variant`, `data-size`.
@@ -39,17 +39,17 @@ Vitest + Testing Library (jsdom). Assert real DOM behavior: disabled state, `asC
 CSF3 stories covering every variant and size, plus a `play` that exercises interaction. If the component's appearance depends on the theme cascade, add a `ThemeProof`-style play that reads `getComputedStyle` and asserts a token-driven value changes across `.dark` (see Button's `ThemeProof`).
 
 ### 5. `COMPONENT.md` — the colocated doc (template below)
-### 6. Add a row to `packages/components/CATALOG.md` (tier, status, one-line *for*, one-line *not for*). When you introduce a new **tier** (the first molecule, organism, …), add its `## <Tier>` section heading above the table.
+### 6. Add a row to `packages/components/CATALOG.md` (status, one-line *for*, one-line *not for*) under the section for what the component is **for** — Actions, Forms, Display, Navigation, Overlays or Layout. If it genuinely serves a purpose none of those cover, propose a new section rather than forcing a fit.
 ### 7. Run the gates green: `npm test` and `npm run test:storybook`.
 
-### Compositional & variant-less components (molecules and beyond)
+### Compositional & variant-less components
 
-The guidance above assumes the common case: a single atom with a `cva` variant matrix. Some components — a **compositional molecule** like `Select` (several exported parts from one `<name>.tsx`), or any part with **no variant axis** — legitimately depart from it. The rules for those:
+The guidance above assumes the common case: a single control with a `cva` variant matrix. Some components — a **compositional** one like `Select` (several exported parts from one `<name>.tsx`), or any part with **no variant axis** — legitimately depart from it. The rules for those:
 
 - **No variant axis → no `cva`.** Use plain `const` class strings merged with `cn`. `cva` earns its place only when there's a closed union to enforce; a single fixed style in a one-option `cva` is ceremony. (`no-hardcoded-values` still applies — it scans the class strings regardless.)
 - **`data-slot` is always required; `data-variant`/`data-size` are only for components that *have* those variants.** Don't emit empty variant attributes.
 - **The type gate proves what's actually true.** With no variant union to make exhaustive, assert a real soundness property instead — e.g. a required prop the primitive mandates (`Select.Item` needs `value`): a `@ts-expect-error` on the missing-prop case + a valid case that compiles. (See `select.test-d.ts`.) The metric — "illegal states don't compile" — is unchanged; only the specific claim differs.
-- **Compositional API shape.** A molecule exports its parts from one `<name>.tsx` (`Select`, `SelectTrigger`, `SelectContent`, `SelectItem`, …), each a thin wrapper that applies token classes + forwards props + sets its own `data-slot`. The file is named after the root part. One `COMPONENT.md` documents the whole set (a *Parts* table, not one big prop list).
+- **Compositional API shape.** Such a component exports its parts from one `<name>.tsx` (`Select`, `SelectTrigger`, `SelectContent`, `SelectItem`, …), each a thin wrapper that applies token classes + forwards props + sets its own `data-slot`. The file is named after the root part. One `COMPONENT.md` documents the whole set (a *Parts* table, not one big prop list).
 - **Overlay surfaces use the elevation tokens.** A portalled surface (Select content, and future Popover/Dialog/Tooltip) sits on the `popover` colour role and carries `shadow-popover` (dialogs use `shadow-dialog`); it is delineated by `border border-border` + `bg-popover` **and** elevation. The elevation scale rebinds light↔dark like colour roles do (see ADR 5). Still **no raw `box-shadow`** in component source — reach only for the `shadow-*` utilities; if a surface needs a new elevation level, that's a token decision to raise, not to improvise.
 
 ### Testing overlays & pointer-driven primitives
