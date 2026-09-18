@@ -14,12 +14,12 @@ lastUpdated: 2026-07-02
 
 | Part | Element | Description |
 |------|---------|-------------|
-| `AppShell` | `div` (provider) | Root flex frame; owns collapse state. `defaultCollapsed` sets the initial state. |
+| `AppShell` | `div` (provider) | Root flex frame; owns collapse state. `defaultCollapsed` sets the initial state; below 768px the rail starts collapsed whatever it says, because the expanded rail leaves a phone no room. |
 | `AppShellSidebar` | `aside` | The nav rail on the `card` surface; animates width between expanded (`w-64`) and collapsed (`w-16`). |
 | `AppShellMain` | `div` | The column beside the sidebar holding header + content. |
 | `AppShellHeader` | `header` | Sticky top bar for the trigger, breadcrumb, and page actions. |
 | `AppShellTrigger` | `button` | Toggles the sidebar; reflects state via `aria-expanded`. |
-| `AppShellContent` | `main` | The page content region. |
+| `AppShellContent` | `main` | The page content region. It carries no padding: put the screen inside `Page`, which owns the inset. |
 
 ## For / Not for
 

@@ -30,6 +30,9 @@ const exports = exportedNames();
 // a path is tried before a token path, because `undrift.config.json` is both
 // shapes and only one of them is true.
 const tokensCss = readFileSync(resolve(root, "../tokens/dist/web/tokens.css"), "utf8");
+// This package's own name is a real thing to name: a skill says what the design
+// system ships by naming it.
+const ownName: string = JSON.parse(readFileSync(resolve(root, "package.json"), "utf8")).name;
 const deps = new Set(Object.keys({ ...JSON.parse(readFileSync(resolve(root, "package.json"), "utf8")).dependencies, ...JSON.parse(readFileSync(resolve(root, "package.json"), "utf8")).devDependencies }));
 const hooks = readFileSync(resolve(repo, ".claude/settings.json"), "utf8");
 // A bare filename that every component directory carries (`COMPONENT.md`)
@@ -51,7 +54,7 @@ function resolves(name: string): boolean {
   if (/^(no-[a-z-]+)$/.test(name)) return gateRules.has(name);
   if (/\.test\.[a-z]+$/.test(name)) return testFiles.has(name);
   if (/^\/\//.test(name)) return true; // a comment marker: `// token-exempt`
-  if (/^@?[a-z0-9-]+\/[a-z0-9-]+$/.test(name) && deps.has(name)) return true; // a package this package depends on
+  if (/^@?[a-z0-9-]+\/[a-z0-9-]+$/.test(name) && (deps.has(name) || name === ownName)) return true; // a package this package depends on
   // `dimension.radius.md` is token-shaped AND file-shaped; `undrift.config.json`
   // too. Try both readings and accept either, so neither shape masks the other.
   const tokenShaped = /^[a-z]+(\.[a-z0-9-]+)+$/.test(name);

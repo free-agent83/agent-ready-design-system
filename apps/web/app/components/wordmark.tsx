@@ -9,7 +9,7 @@ export function Wordmark() {
       >
         C
       </span>
-      <span className="text-sm font-semibold tracking-tight">Correct by Design</span>
+      <span className="text-sm font-semibold tracking-tight group-data-[state=collapsed]:sr-only">Correct by Design</span>
     </span>
   );
 }

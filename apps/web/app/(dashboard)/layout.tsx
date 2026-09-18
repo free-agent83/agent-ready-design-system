@@ -18,7 +18,8 @@ import { ThemeToggle } from "../components/theme-toggle";
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <AppShell>
-      <AppShellSidebar>
+      {/* `group` lets the nav and wordmark read the rail's collapsed state. */}
+      <AppShellSidebar className="group">
         <div className="flex h-14 items-center border-b border-border px-4">
           <Wordmark />
         </div>

@@ -9,17 +9,35 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
-  Switch,
+  Grid,
+  Input,
+  Page,
+  PageActions,
+  PageDescription,
+  PageHeader,
+  PageTitle,
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionTitle,
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
-  Input,
+  SelectTrigger,
+  SelectValue,
   Separator,
+  Stack,
+  Switch,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@cbd/components";
 
+// The example product's Settings page type (`apps/web/TEMPLATES.md`).
+//
 // A representative build of the frozen agent-trial task against sample/'s
 // components. This is a hand-built Arm-A reference (careful, docs-followed),
 // NOT a scored trial run — it exists so the screen shape can be reviewed
@@ -31,9 +49,21 @@ import {
 
 const CATEGORIES = [
   { id: "mentions", label: "Mentions", hint: "When someone @-mentions you" },
-  { id: "replies", label: "Replies", hint: "Replies to your messages and threads" },
-  { id: "assignments", label: "Task assignments", hint: "When a task is assigned to you" },
-  { id: "summary", label: "Weekly summary", hint: "A digest of the week's activity" },
+  {
+    id: "replies",
+    label: "Replies",
+    hint: "Replies to your messages and threads",
+  },
+  {
+    id: "assignments",
+    label: "Task assignments",
+    hint: "When a task is assigned to you",
+  },
+  {
+    id: "summary",
+    label: "Weekly summary",
+    hint: "A digest of the week's activity",
+  },
 ] as const;
 
 const CHANNELS = [
@@ -118,7 +148,10 @@ export default function NotificationsPage() {
     setSaveState("idle");
     setDraft((d) => ({
       ...d,
-      matrix: { ...d.matrix, [cat]: { ...d.matrix[cat], [chan]: !d.matrix[cat][chan] } },
+      matrix: {
+        ...d.matrix,
+        [cat]: { ...d.matrix[cat], [chan]: !d.matrix[cat][chan] },
+      },
     }));
   }
 
@@ -141,173 +174,215 @@ export default function NotificationsPage() {
 
   if (loadState === "load-error") {
     return (
-      <div className="mx-auto max-w-3xl">
-        <Card>
-          <CardHeader>
-            <CardTitle>We could not load your notification settings</CardTitle>
-            <CardDescription>Something went wrong reaching the server. Your settings are safe.</CardDescription>
-          </CardHeader>
-          <CardFooter>
+      <Page>
+        <Section surface role="alert">
+          <SectionHeader>
+            <SectionTitle>
+              We could not load your notification settings
+            </SectionTitle>
+            <SectionDescription>
+              Something went wrong reaching the server. Your settings are safe.
+            </SectionDescription>
+          </SectionHeader>
+          <Stack direction="horizontal">
             <Button variant="outline" onClick={() => setLoadState("loading")}>
               Try again
             </Button>
-          </CardFooter>
-        </Card>
-      </div>
+          </Stack>
+        </Section>
+      </Page>
     );
   }
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <Page>
+      <PageHeader>
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Notifications</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <PageTitle>Notifications</PageTitle>
+          <PageDescription>
             Choose what you are notified about, and how.
-          </p>
+          </PageDescription>
         </div>
         {dirty && (
-          <Badge variant="warning" aria-live="polite">
-            Unsaved changes
-          </Badge>
+          <PageActions>
+            <Badge variant="warning" aria-live="polite">
+              Unsaved changes
+            </Badge>
+          </PageActions>
         )}
-      </div>
+      </PageHeader>
 
-      {/* Channels x categories */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Delivery</CardTitle>
-          <CardDescription>
+      {/* Channels x categories: tabular data, so a Table */}
+      <Section surface>
+        <SectionHeader>
+          <SectionTitle>Delivery</SectionTitle>
+          <SectionDescription>
             Turn each channel on or off for every kind of event.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="p-0">
-          {/* Column header row, desktop only */}
-          <div className="hidden grid-cols-[1fr_repeat(3,5rem)] items-center gap-4 border-b border-border px-6 pb-3 sm:grid">
-            <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              Event
-            </span>
-            {CHANNELS.map((c) => (
-              <span
-                key={c.id}
-                className="text-center text-xs font-medium uppercase tracking-wide text-muted-foreground"
-              >
-                {c.label}
-              </span>
-            ))}
-          </div>
-          <div className="divide-y divide-border">
+          </SectionDescription>
+        </SectionHeader>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Event</TableHead>
+              {CHANNELS.map((c) => (
+                <TableHead key={c.id} className="text-center">
+                  {c.label}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {CATEGORIES.map((cat) => (
-              <div
-                key={cat.id}
-                className="grid grid-cols-1 gap-3 px-6 py-4 sm:grid-cols-[1fr_repeat(3,5rem)] sm:items-center sm:gap-4"
-              >
-                <div>
-                  <div className="text-sm font-medium">{cat.label}</div>
-                  <div className="text-xs text-muted-foreground">{cat.hint}</div>
-                </div>
-                <div className="flex items-center gap-6 sm:contents">
-                  {CHANNELS.map((chan) => (
-                    <div key={chan.id} className="flex items-center gap-2 sm:justify-center">
-                      <Switch
-                        checked={draft.matrix[cat.id][chan.id]}
-                        onCheckedChange={() => toggle(cat.id, chan.id)}
-                        aria-label={`${chan.label} notifications for ${cat.label}`}
-                      />
-                      <span className="text-xs text-muted-foreground sm:hidden">{chan.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <TableRow key={cat.id}>
+                <TableCell>
+                  <span className="block text-sm font-medium">{cat.label}</span>
+                  <span className="block text-xs text-muted-foreground">
+                    {cat.hint}
+                  </span>
+                </TableCell>
+                {CHANNELS.map((chan) => (
+                  <TableCell key={chan.id} className="text-center">
+                    <Switch
+                      checked={draft.matrix[cat.id][chan.id]}
+                      onCheckedChange={() => toggle(cat.id, chan.id)}
+                      aria-label={`${chan.label} notifications for ${cat.label}`}
+                    />
+                  </TableCell>
+                ))}
+              </TableRow>
             ))}
-          </div>
-        </CardContent>
-      </Card>
+          </TableBody>
+        </Table>
+      </Section>
 
       {/* Cadence + quiet hours */}
-      <div className="grid gap-6 sm:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Bundling</CardTitle>
-            <CardDescription>How often notifications are grouped and sent.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Select value={draft.cadence} onValueChange={(v) => patch("cadence", v as Settings["cadence"])}>
-              <SelectTrigger aria-label="Bundling frequency">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="realtime">Real-time</SelectItem>
-                <SelectItem value="hourly">Hourly</SelectItem>
-                <SelectItem value="daily">Daily</SelectItem>
-                <SelectItem value="weekly">Weekly</SelectItem>
-              </SelectContent>
-            </Select>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Quiet hours</CardTitle>
-            <CardDescription>Push notifications are held during these hours.</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-3">
-            <div className="flex items-end gap-2">
-              <label className="flex-1 text-xs font-medium text-muted-foreground">
-                From
-                <Input
-                  type="time"
-                  value={draft.quietStart}
-                  onChange={(e) => patch("quietStart", e.target.value)}
-                  className="mt-1"
-                />
-              </label>
-              <label className="flex-1 text-xs font-medium text-muted-foreground">
-                To
-                <Input
-                  type="time"
-                  value={draft.quietEnd}
-                  onChange={(e) => patch("quietEnd", e.target.value)}
-                  className="mt-1"
-                />
-              </label>
-            </div>
-            <label className="text-xs font-medium text-muted-foreground">
-              Timezone
-              <Select value={draft.timezone} onValueChange={(v) => patch("timezone", v)}>
-                <SelectTrigger className="mt-1" aria-label="Timezone">
+      <Section>
+        <SectionHeader>
+          <SectionTitle>Timing</SectionTitle>
+          <SectionDescription>
+            When notifications are grouped, and when they are held.
+          </SectionDescription>
+        </SectionHeader>
+        <Grid min="md">
+          <Card>
+            <CardHeader>
+              <CardTitle>Bundling</CardTitle>
+              <CardDescription>
+                How often notifications are grouped and sent.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Select
+                value={draft.cadence}
+                onValueChange={(v) =>
+                  patch("cadence", v as Settings["cadence"])
+                }
+              >
+                <SelectTrigger aria-label="Bundling frequency">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {TIMEZONES.map((tz) => (
-                    <SelectItem key={tz} value={tz}>
-                      {tz.replace("_", " ")}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="realtime">Real-time</SelectItem>
+                  <SelectItem value="hourly">Hourly</SelectItem>
+                  <SelectItem value="daily">Daily</SelectItem>
+                  <SelectItem value="weekly">Weekly</SelectItem>
                 </SelectContent>
               </Select>
-            </label>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Quiet hours</CardTitle>
+              <CardDescription>
+                Push notifications are held during these hours.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Stack>
+                <Stack direction="horizontal">
+                  <Stack gap="control" className="flex-1">
+                    <label
+                      htmlFor="quiet-start"
+                      className="text-xs font-medium text-muted-foreground"
+                    >
+                      From
+                    </label>
+                    <Input
+                      id="quiet-start"
+                      type="time"
+                      value={draft.quietStart}
+                      onChange={(e) => patch("quietStart", e.target.value)}
+                    />
+                  </Stack>
+                  <Stack gap="control" className="flex-1">
+                    <label
+                      htmlFor="quiet-end"
+                      className="text-xs font-medium text-muted-foreground"
+                    >
+                      To
+                    </label>
+                    <Input
+                      id="quiet-end"
+                      type="time"
+                      value={draft.quietEnd}
+                      onChange={(e) => patch("quietEnd", e.target.value)}
+                    />
+                  </Stack>
+                </Stack>
+                <Stack gap="control">
+                  <label
+                    htmlFor="timezone"
+                    className="text-xs font-medium text-muted-foreground"
+                  >
+                    Timezone
+                  </label>
+                  <Select
+                    value={draft.timezone}
+                    onValueChange={(v) => patch("timezone", v)}
+                  >
+                    <SelectTrigger id="timezone">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TIMEZONES.map((tz) => (
+                        <SelectItem key={tz} value={tz}>
+                          {tz.replace("_", " ")}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </Stack>
+              </Stack>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Section>
 
       {/* Usage meter with threshold state */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Notifications sent</CardTitle>
-          <CardDescription>Your team's usage this month against its plan limit.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-3">
-          <div className="flex items-center justify-between text-sm">
+      <Section surface>
+        <SectionHeader>
+          <SectionTitle>Notifications sent</SectionTitle>
+          <SectionDescription>
+            Your team's usage this month against its plan limit.
+          </SectionDescription>
+        </SectionHeader>
+        <Stack gap="control">
+          <Stack
+            direction="horizontal"
+            align="center"
+            className="justify-between text-sm"
+          >
             <span className="font-mono font-medium tabular-nums">
-              {SENT_THIS_MONTH.toLocaleString()} / {MONTHLY_LIMIT.toLocaleString()}
+              {SENT_THIS_MONTH.toLocaleString()} /{" "}
+              {MONTHLY_LIMIT.toLocaleString()}
             </span>
             {OVER_THRESHOLD ? (
               <Badge variant="warning">{USAGE_PCT}% used</Badge>
             ) : (
               <Badge variant="neutral">{USAGE_PCT}% used</Badge>
             )}
-          </div>
+          </Stack>
           <div
             className="h-2 w-full overflow-hidden rounded-full bg-muted"
             role="progressbar"
@@ -327,51 +402,65 @@ export default function NotificationsPage() {
           </div>
           {OVER_THRESHOLD && (
             <p className="text-xs text-warning">
-              Your team has sent more than 80% of this month's notification allowance.
+              Your team has sent more than 80% of this month's notification
+              allowance.
             </p>
           )}
-        </CardContent>
-      </Card>
-
-      <Separator />
+        </Stack>
+      </Section>
 
       {/* Save row: idle / saving / saved / error, plus dirty indicator */}
-      <div className="flex flex-wrap items-center justify-end gap-3">
-        <span className="mr-auto text-sm text-muted-foreground" aria-live="polite">
-          {saveState === "saving" && "Saving your changes..."}
-          {saveState === "saved" && !dirty && "All changes saved."}
-          {saveState === "save-error" && (
-            <span className="text-destructive">We could not save. Please try again.</span>
-          )}
-          {saveState === "idle" && dirty && "You have unsaved changes."}
-        </span>
-        <Button
-          variant="outline"
-          onClick={() => setDraft(saved)}
-          disabled={!dirty || saveState === "saving"}
+      <Stack>
+        <Separator />
+        <Stack
+          direction="horizontal"
+          align="center"
+          wrap
+          className="justify-between"
         >
-          Discard
-        </Button>
-        <Button onClick={save} disabled={!dirty || saveState === "saving"}>
-          {saveState === "saving" ? "Saving..." : "Save changes"}
-        </Button>
-      </div>
-    </div>
+          <span className="text-sm text-muted-foreground" aria-live="polite">
+            {saveState === "saving" && "Saving your changes..."}
+            {saveState === "saved" && !dirty && "All changes saved."}
+            {saveState === "save-error" && (
+              <span className="text-destructive">
+                We could not save. Please try again.
+              </span>
+            )}
+            {saveState === "idle" && dirty && "You have unsaved changes."}
+          </span>
+          <Stack direction="horizontal" gap="control">
+            <Button
+              variant="outline"
+              onClick={() => setDraft(saved)}
+              disabled={!dirty || saveState === "saving"}
+            >
+              Discard
+            </Button>
+            <Button onClick={save} disabled={!dirty || saveState === "saving"}>
+              {saveState === "saving" ? "Saving..." : "Save changes"}
+            </Button>
+          </Stack>
+        </Stack>
+      </Stack>
+    </Page>
   );
 }
 
 function LoadingState() {
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-6" aria-busy="true" aria-label="Loading notification settings">
+    <Page aria-busy="true" aria-label="Loading notification settings">
       <div className="h-8 w-48 animate-pulse rounded-md bg-muted" />
-      <Card>
-        <CardContent className="flex flex-col gap-4 py-6">
+      <Section surface>
+        <Stack>
           {[0, 1, 2, 3].map((i) => (
-            <div key={i} className="h-10 w-full animate-pulse rounded-md bg-muted" />
+            <div
+              key={i}
+              className="h-10 w-full animate-pulse rounded-md bg-muted"
+            />
           ))}
-        </CardContent>
-      </Card>
+        </Stack>
+      </Section>
       <div className="h-32 w-full animate-pulse rounded-md bg-muted" />
-    </div>
+    </Page>
   );
 }

@@ -16,6 +16,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "../breadcrumb/breadcrumb";
+import { Page, PageDescription, PageHeader, PageTitle } from "../page/page";
 
 const meta = {
   title: "Layout/AppShell",
@@ -54,8 +55,14 @@ export const Basic: Story = {
           </Breadcrumb>
         </AppShellHeader>
         <AppShellContent>
-          <h1 className="text-lg font-semibold">Overview</h1>
-          <p className="mt-2 text-sm text-muted-foreground">The dashboard content region.</p>
+          <Page>
+            <PageHeader>
+              <div>
+                <PageTitle>Overview</PageTitle>
+                <PageDescription>The dashboard content region.</PageDescription>
+              </div>
+            </PageHeader>
+          </Page>
         </AppShellContent>
       </AppShellMain>
     </AppShell>

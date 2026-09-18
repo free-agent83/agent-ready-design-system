@@ -26,8 +26,19 @@ export interface AppShellProps extends React.ComponentProps<"div"> {
   defaultCollapsed?: boolean;
 }
 
+// Below Tailwind's `md` breakpoint, the width at which the expanded rail stops
+// leaving the page room.
+const NARROW = "(max-width: 767px)";
+
 export function AppShell({ className, defaultCollapsed = false, ...props }: AppShellProps) {
   const [collapsed, setCollapsed] = React.useState(defaultCollapsed);
+  // On a narrow screen the expanded rail takes most of the width and pushes the
+  // page off the edge, so it starts as the icon rail there. Navigation stays
+  // reachable (every link is still on the rail) and the trigger still expands it.
+  React.useEffect(() => {
+    if (typeof window.matchMedia !== "function") return;
+    if (window.matchMedia(NARROW).matches) setCollapsed(true);
+  }, []);
   return (
     <AppShellContext.Provider value={{ collapsed, setCollapsed }}>
       <div data-slot="app-shell" className={cn("flex min-h-screen bg-background", className)} {...props} />
@@ -50,10 +61,12 @@ export function AppShellSidebar({ className, ...props }: React.ComponentProps<"a
   );
 }
 
-// The header/content sit in the column beside the sidebar.
+// The header/content sit in the column beside the sidebar. `min-w-0` lets the
+// column shrink below its content's width, so a wide table scrolls inside its
+// own wrapper instead of pushing the page past the viewport.
 export function AppShellMain({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div data-slot="app-shell-main" className={cn("flex flex-1 flex-col", className)} {...props} />
+    <div data-slot="app-shell-main" className={cn("flex min-w-0 flex-1 flex-col", className)} {...props} />
   );
 }
 
@@ -102,8 +115,11 @@ export function AppShellTrigger({ className, ...props }: React.ComponentProps<"b
   );
 }
 
+// No padding of its own: the inset from the frame's edge belongs to `Page`
+// (`layout.page.inset`), the one owner `COMPOSITION.md` gives it. Padding here
+// as well doubled the inset on every screen built correctly inside `Page`.
 export function AppShellContent({ className, ...props }: React.ComponentProps<"main">) {
   return (
-    <main data-slot="app-shell-content" className={cn("flex-1 p-6", className)} {...props} />
+    <main data-slot="app-shell-content" className={cn("flex-1", className)} {...props} />
   );
 }

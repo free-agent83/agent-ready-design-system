@@ -30,12 +30,13 @@ This file is the thin rulebook and a map. Read the deeper docs it points to when
 
 - `packages/tokens/` — the token source of truth. `src/primitive/` (raw OKLCH colours, dimensions, type) and `src/theme/<name>/{light,dark}.tokens.json` (semantic roles). `build.mjs` compiles these to `dist/web/tokens.css` (+ js/json). **Never edit `dist/`.**
 - `packages/components/` — React components (cva + Radix + Tailwind v4), one flat directory per component at `src/components/<name>/`. There is no tier system: a component is anything that renders, whatever it is made of. `tailwind.css` wires tokens into Tailwind via `@theme inline`. `tests/` holds the cross-component gates.
-- `apps/web/` — the Next.js (App Router) dashboard: a branded, client-facing demo (sidebar + header + live theme toggle) that consumes `@cbd/components` and dogfoods the tokens.
+- `apps/web/` — the example product: a three-screen Next.js (App Router) dashboard built only from `@cbd/components`. It stands in for a real product, and its screens are the reference an agent copies. Its page types are in `apps/web/TEMPLATES.md`.
 - `scripts/blast-radius.mjs` — demonstrates one token edit propagating everywhere.
 
 ## Where to go next
 
 - **To pick the right component:** `packages/components/CATALOG.md` (the index — for / not-for).
+- **To build a page:** `apps/web/TEMPLATES.md` (the product's page types, each with a reference screen to copy). Page templates are the product's, not the design system's.
 - **To put components together on a screen:** `packages/components/COMPOSITION.md` (the compositional contract: inset, gaps, surfaces, collapse, outline, each rule naming its token or export). Build every screen inside `Page`.
 - **To see the token layer at a glance:** `packages/tokens/FOUNDATIONS.md` (generated from the source on every build; never edit it).
 - **To use a specific component:** its `COMPONENT.md` (props, best practices, a11y).

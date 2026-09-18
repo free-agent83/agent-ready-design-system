@@ -17,9 +17,20 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Page,
+  PageDescription,
+  PageHeader,
+  PageTitle,
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionTitle,
+  Stack,
 } from "@cbd/components";
 import { roles, users, type User } from "../../lib/users";
 
+// The example product's List page type (`apps/web/TEMPLATES.md`): a count, the
+// filters, then the table with its own search, sorting and pagination.
 const roleOptions = [
   { value: "all", label: "All roles" },
   ...roles.map((r) => ({ value: r, label: r })),
@@ -97,37 +108,42 @@ export default function UsersPage() {
   );
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Users</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          A directory of workspace members — search, filter, and sort.
-        </p>
-      </div>
+    <Page>
+      <PageHeader>
+        <div>
+          <PageTitle>Users</PageTitle>
+          <PageDescription>A directory of workspace members, to search, filter and sort.</PageDescription>
+        </div>
+      </PageHeader>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <Combobox
-          options={roleOptions}
-          value={role}
-          onValueChange={setRole}
-          placeholder="All roles"
-          searchPlaceholder="Filter roles…"
-          className="w-48"
+      <Section>
+        <SectionHeader>
+          <SectionTitle>Members</SectionTitle>
+          <SectionDescription>{users.length} members in the workspace</SectionDescription>
+        </SectionHeader>
+        <Stack direction="horizontal" align="center" wrap>
+          <Combobox
+            options={roleOptions}
+            value={role}
+            onValueChange={setRole}
+            placeholder="All roles"
+            searchPlaceholder="Filter roles…"
+            className="w-48"
+          />
+          <DatePicker
+            value={joinedAfter}
+            onValueChange={setJoinedAfter}
+            placeholder="Joined after…"
+            className="w-56"
+          />
+        </Stack>
+        <DataTable
+          columns={columns}
+          data={data}
+          filterColumn="name"
+          filterPlaceholder="Search members…"
         />
-        <DatePicker
-          value={joinedAfter}
-          onValueChange={setJoinedAfter}
-          placeholder="Joined after…"
-          className="w-56"
-        />
-      </div>
-
-      <DataTable
-        columns={columns}
-        data={data}
-        filterColumn="name"
-        filterPlaceholder="Search members…"
-      />
-    </div>
+      </Section>
+    </Page>
   );
 }

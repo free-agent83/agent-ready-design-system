@@ -4,74 +4,87 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Grid,
+  Page,
+  PageDescription,
+  PageHeader,
+  PageTitle,
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionTitle,
+  Stack,
 } from "@cbd/components";
 import { StatCard } from "../components/stat-card";
 import { RevenueChart } from "../components/revenue-chart";
 import { ActivityList } from "../components/activity-list";
 import { stats } from "../lib/fixtures";
 
+// The example product's Overview page type (`apps/web/TEMPLATES.md`): figures
+// first, then the activity behind them.
+const KEY_FIGURES = [
+  { label: "New customers", value: "128" },
+  { label: "Invoices sent", value: "412" },
+  { label: "Open tickets", value: "17" },
+  { label: "Conversion", value: "3.2%" },
+];
+
 export default function OverviewPage() {
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Overview</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          A snapshot of activity across the workspace.
-        </p>
-      </div>
+    <Page>
+      <PageHeader>
+        <div>
+          <PageTitle>Overview</PageTitle>
+          <PageDescription>A snapshot of activity across the workspace.</PageDescription>
+        </div>
+      </PageHeader>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((s) => (
-          <StatCard key={s.label} stat={s} />
-        ))}
-      </div>
+      <Section>
+        <SectionHeader>
+          <SectionTitle>This month</SectionTitle>
+          <SectionDescription>Headline figures, and revenue over the last seven months.</SectionDescription>
+        </SectionHeader>
+        <Grid min="xs">
+          {stats.map((s) => (
+            <StatCard key={s.label} stat={s} />
+          ))}
+        </Grid>
+        <Grid min="md">
+          <Card>
+            <CardHeader>
+              <CardTitle>Revenue</CardTitle>
+              <CardDescription>Monthly recurring revenue, last 7 months</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RevenueChart />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Key figures</CardTitle>
+              <CardDescription>Month to date</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Stack className="text-sm">
+                {KEY_FIGURES.map((f) => (
+                  <Stack key={f.label} direction="horizontal" align="center" className="justify-between">
+                    <span className="text-muted-foreground">{f.label}</span>
+                    <span className="font-mono font-medium tabular-nums">{f.value}</span>
+                  </Stack>
+                ))}
+              </Stack>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Section>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Revenue</CardTitle>
-            <CardDescription>Monthly recurring revenue, last 7 months</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <RevenueChart />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>This month</CardTitle>
-            <CardDescription>Key figures</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4 text-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">New customers</span>
-              <span className="font-mono font-medium tabular-nums">128</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Invoices sent</span>
-              <span className="font-mono font-medium tabular-nums">412</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Open tickets</span>
-              <span className="font-mono font-medium tabular-nums">17</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Conversion</span>
-              <span className="font-mono font-medium tabular-nums">3.2%</span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent activity</CardTitle>
-          <CardDescription>Latest member events</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ActivityList />
-        </CardContent>
-      </Card>
-    </div>
+      <Section surface>
+        <SectionHeader>
+          <SectionTitle>Recent activity</SectionTitle>
+          <SectionDescription>Latest member events</SectionDescription>
+        </SectionHeader>
+        <ActivityList />
+      </Section>
+    </Page>
   );
 }

@@ -2,6 +2,8 @@
 
 Correct UI is the default output here rather than something a review has to catch. Styling comes only from tokens, the legal range of every component is a compile-time type, and the rules are enforced by a hook while an agent writes, not documented and hoped for.
 
+The contents are an example; the structure is the point. These tokens, the 24 components, the five skills and the three-screen dashboard in `apps/web` stand in for a real product's own. What carries over is where each kind of decision lives and what checks it. [The framework, and the example](#the-framework-and-the-example) sets out which is which.
+
 [`examples/specimen-report.html`](examples/specimen-report.html) is the other half: an assessment of a real third-party design system at a stated commit, showing the same standard applied to a codebase built under delivery pressure rather than to this one. [`examples/README.md`](examples/README.md) explains how to read it.
 
 Chris Learey. Shared for evaluation, see [LICENCE.md](LICENCE.md).
@@ -13,6 +15,27 @@ Chris Learey. Shared for evaluation, see [LICENCE.md](LICENCE.md).
 A small, code-first design system. It packages DTCG design tokens and React components so that correct UI is the default output, not something that requires per-component design review.
 
 The system is built as an Nx workspace with two packages (`@cbd/tokens`, `@cbd/components`) and one app (`apps/web`, a Next.js App Router dashboard that consumes the components). Node 20+ is required.
+
+---
+
+## The framework, and the example
+
+Everything here is one of two things. The framework is the structure, and it carries over to any product. The example is what fills that structure in this repository, and a real team replaces it with its own.
+
+| Layer | The framework, which carries over | The example, which a product replaces |
+|---|---|---|
+| Tokens | Primitive and semantic layers in DTCG JSON, compiled to CSS; `FOUNDATIONS.md` generated from them; contrast tested in light and dark | These colours, this type scale, these three themes |
+| Components | One directory per component holding the source, a type test, a behaviour test, stories and a `COMPONENT.md`; a row in `CATALOG.md` | These 24 components |
+| Composition | `COMPOSITION.md`, every rule bound to a token or an export; `Page`, `Section`, `Stack` and `Grid`, which encode those rules as defaults | The values, such as a 32px page inset |
+| Conventions | `CONVENTIONS.md`, every rule naming what enforces it or saying that nothing does | These 14 rules |
+| Skills | `SKILL.md` files that name only files, tokens and exports that exist, checked by a test | These five skills |
+| Page templates | The product's page types in `apps/web/TEMPLATES.md`, each with a reference screen that keeps the composition rules | Overview, List and Settings |
+| Product | An application built only from the system | A three-screen dashboard |
+| Enforcement | The gate, the write-time hook and the test suite | The rule profiles in `undrift.config.json` |
+
+Page templates sit in the product rather than the design system on purpose. Which kinds of screen a product has is the product's decision, so `@cbd/components` ships the primitives every template is built from and no templates of its own. `apps/web/TEMPLATES.md` is where a product records its page types.
+
+The example is small so that every layer can be read end to end. A design system for a real product grows its own components, rules, skills and page types into the same structure.
 
 ---
 

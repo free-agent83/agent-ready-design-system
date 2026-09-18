@@ -27,7 +27,8 @@ export function SidebarNav() {
             )}
           >
             {item.icon}
-            {item.label}
+            {/* On the collapsed rail the icon shows alone; the label stays for a screen reader. */}
+            <span className="group-data-[state=collapsed]:sr-only">{item.label}</span>
           </Link>
         );
       })}

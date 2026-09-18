@@ -1,22 +1,23 @@
-import { Card, CardContent, CardHeader } from "@cbd/components";
+import { Card, CardContent, CardHeader, Grid, Page, Stack } from "@cbd/components";
 
 // Skeleton shown while a dashboard route segment streams in. Uses the muted role
-// + pulse — no spinner, enterprise-quiet.
+// and a pulse, no spinner. Built inside `Page` like every screen, so the layout
+// does not jump when the route arrives.
 function Bar({ className = "" }: { className?: string }) {
   return <div className={`animate-pulse rounded-md bg-muted ${className}`} />;
 }
 
 export default function DashboardLoading() {
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-6">
-      <div className="space-y-2">
+    <Page aria-busy="true" aria-label="Loading">
+      <Stack gap="control">
         <Bar className="h-7 w-40" />
         <Bar className="h-4 w-64" />
-      </div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      </Stack>
+      <Grid min="xs">
         {Array.from({ length: 4 }).map((_, i) => (
           <Card key={i}>
-            <CardHeader className="pb-2">
+            <CardHeader>
               <Bar className="h-4 w-24" />
             </CardHeader>
             <CardContent>
@@ -24,7 +25,7 @@ export default function DashboardLoading() {
             </CardContent>
           </Card>
         ))}
-      </div>
+      </Grid>
       <Card>
         <CardHeader>
           <Bar className="h-5 w-32" />
@@ -33,6 +34,6 @@ export default function DashboardLoading() {
           <Bar className="h-56 w-full" />
         </CardContent>
       </Card>
-    </div>
+    </Page>
   );
 }

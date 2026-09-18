@@ -53,3 +53,24 @@ test("respects defaultCollapsed", () => {
   render(<Example defaultCollapsed />);
   expect(screen.getByRole("complementary")).toHaveAttribute("data-state", "collapsed");
 });
+
+test("the content region carries no inset of its own, because Page owns it", () => {
+  render(<Example />);
+  expect(screen.getByRole("main").className).not.toMatch(/(^|\s)p[xytrbl]?-/);
+});
+
+test("starts as the icon rail on a narrow screen, so the page is not pushed off the edge", () => {
+  const original = window.matchMedia;
+  window.matchMedia = ((query: string) => ({ matches: query.includes("max-width"), media: query, addEventListener() {}, removeEventListener() {} })) as unknown as typeof window.matchMedia;
+  try {
+    render(<Example />);
+    expect(screen.getByRole("complementary")).toHaveAttribute("data-state", "collapsed");
+  } finally {
+    window.matchMedia = original;
+  }
+});
+
+test("the content column can shrink below its content, so wide content scrolls in place", () => {
+  render(<Example />);
+  expect(screen.getByRole("main").parentElement?.className).toMatch(/(^|\s)min-w-0(\s|$)/);
+});
