@@ -9,7 +9,7 @@ import { expect, test } from "vitest";
 // repository's clothes. "not enforced", "partially" and "judgement" are legal
 // and counted, so the file can report its own split honestly.
 const root = process.cwd();
-const md = readFileSync(resolve(root, "../../CONVENTIONS.md"), "utf8");
+const md = readFileSync(resolve(root, "CONVENTIONS.md"), "utf8");
 const gateSource = readFileSync(resolve(root, "../undrift/src/gate.mjs"), "utf8");
 const gateRules = new Set([...gateSource.matchAll(/"(no-[a-z-]+)"/g)].map((m) => m[1]));
 const testFiles = new Set(
@@ -45,6 +45,23 @@ test("every gate a convention names exists; a line naming none says so", () => {
     }
     const qualified = /\b(not enforced|partially|judgement)\b/i.test(enforced!);
     if (gates.length === 0 && !qualified) problems.push(`${title}: names no gate and does not say it is unenforced`);
+  }
+  expect(problems, problems.join("\n")).toEqual([]);
+});
+
+// This file ships inside the package, so it is read in products that may
+// not run the gate. A test runs when the system is built and has already
+// passed for any installed version; a gate rule checks the product's own
+// files and only exists where the product runs the gate. A line that names
+// either without saying which would promise a product a check it may not get.
+test("every line says where the checks it names run", () => {
+  const problems: string[] = [];
+  for (const { title, enforced } of rules()) {
+    const named = [...enforced!.matchAll(/`([^`]+)`/g)].map((m) => m[1]);
+    if (named.some((n) => /\.test\.[a-z]+$/.test(n)) && !/when the system is built/i.test(enforced!))
+      problems.push(`${title}: names a test without saying it runs when the system is built`);
+    if (named.some((n) => gateRules.has(n)) && !/where the product runs the gate/i.test(enforced!))
+      problems.push(`${title}: names a gate rule without saying it runs where the product runs the gate`);
   }
   expect(problems, problems.join("\n")).toEqual([]);
 });

@@ -95,6 +95,18 @@
       "info-subtle": {
         "$value": "{color.primitive.blue.50}"
       },
+      "gap": {
+        "$value": "{color.primitive.magenta.700}"
+      },
+      "gap-foreground": {
+        "$value": "{color.primitive.white}"
+      },
+      "gap-subtle": {
+        "$value": "{color.primitive.magenta.50}"
+      },
+      "gap-border": {
+        "$value": "{color.primitive.magenta.500}"
+      },
       "chart-1": { "$value": "{color.primitive.indigo.400}" },
       "chart-2": { "$value": "{color.primitive.indigo.500}" },
       "chart-3": { "$value": "{color.primitive.indigo.600}" },

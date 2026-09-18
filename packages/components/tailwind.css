@@ -34,6 +34,15 @@
   --color-info: var(--color-semantic-info);
   --color-info-foreground: var(--color-semantic-info-foreground);
   --color-info-subtle: var(--color-semantic-info-subtle);
+  /* Reserved for Missing's declared-gap marker only (see
+     src/components/missing/COMPONENT.md). Deliberately magenta and outside
+     the status palette above, so a gap can never read as a status such as
+     danger. gap-role-is-missing-only.test.ts keeps it out of every other
+     component's source. */
+  --color-gap: var(--color-semantic-gap);
+  --color-gap-foreground: var(--color-semantic-gap-foreground);
+  --color-gap-subtle: var(--color-semantic-gap-subtle);
+  --color-gap-border: var(--color-semantic-gap-border);
   --shadow-card: var(--shadow-semantic-card);
   --shadow-popover: var(--shadow-semantic-popover);
   --shadow-dialog: var(--shadow-semantic-dialog);
@@ -65,6 +74,32 @@
 @utility grid-auto-sm { grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-min-sm), 1fr)); }
 @utility grid-auto-md { grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-min-md), 1fr)); }
 @utility grid-auto-lg { grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-min-lg), 1fr)); }
+/* Missing's hatch: a faint 45° repeat over the gap-subtle surface, tinted
+   from the gap-border token (never a raw colour) at the same 10% the
+   original undrift template used for its border colour, so it stays
+   legible and in step with the role across every theme and mode. Reserved
+   for Missing; see the comment on --color-gap above.
+   `--theme(--color-gap-border)` (not `var(--color-gap-border)`): a theme
+   variable declared under `@theme inline` only exists as a runtime custom
+   property at `:root` once something reads it with a literal `var()`, and
+   that single `:root` declaration does not re-resolve
+   `--color-semantic-gap-border` at whatever nested `[data-theme]`/`.dark`
+   scope the hatch actually renders under (apps/web wraps previews in a
+   second, inner `data-theme`, see component-preview.tsx), so a literal
+   `var()` reference here can render the wrong theme's colour, or nothing,
+   once the theme lives on an ancestor other than `:root`. `--theme()`
+   resolves at build time the same way Tailwind's own generated utilities
+   above do (`.border-gap-border` compiles to
+   `var(--color-semantic-gap-border)` directly, never
+   `var(--color-gap-border)`), so the hatch stays correct wherever it is
+   themed. */
+@utility bg-gap-hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    color-mix(in oklch, --theme(--color-gap-border) 10%, transparent) 0 7px,
+    transparent 7px 14px
+  );
+}
 @layer base {
   /* Inter is the reading face for the whole system. */
   body {

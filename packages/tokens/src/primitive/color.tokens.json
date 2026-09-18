@@ -481,6 +481,64 @@
           }
         },
         "$type": "color"
+      },
+      "magenta": {
+        "50": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.965,
+              0.02,
+              5
+            ],
+            "hex": "#ffeef1"
+          }
+        },
+        "400": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.74,
+              0.13,
+              5
+            ],
+            "hex": "#ef86a0"
+          }
+        },
+        "500": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.6225,
+              0.1666,
+              2.5217
+            ],
+            "hex": "#d4537e"
+          }
+        },
+        "700": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.4817,
+              0.1364,
+              3.3835
+            ],
+            "hex": "#993556"
+          }
+        },
+        "950": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.24,
+              0.07,
+              5
+            ],
+            "hex": "#390d1b"
+          }
+        },
+        "$type": "color"
       }
     }
   }

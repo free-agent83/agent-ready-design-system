@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
+  "files": [
+    "src",
+    "AGENTS.md",
+    "CATALOG.md",
+    "CONVENTIONS.md",
+    "COMPOSITION.md",
+    "tailwind.css"
+  ],
   "exports": {
     ".": "./src/index.ts",
     "./css": "./tailwind.css"

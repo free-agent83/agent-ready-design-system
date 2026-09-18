@@ -63,7 +63,7 @@ npm run blast-radius
 
 ## How to read this codebase
 
-**AI agents: read `AGENTS.md` first** — it is the short rulebook and a map of where everything lives (Claude Code picks it up via `CLAUDE.md`, which just imports it). **Adding or changing a component? read `CONTRIBUTING.md`** — the build manual and definition of done.
+**AI agents: read `AGENTS.md` first** — it is the short rulebook and a map of where everything lives (Claude Code picks it up via `CLAUDE.md`, which imports it and `packages/components/AGENTS.md`, where the rules for building with the components ship). **Adding or changing a component? read `CONTRIBUTING.md`** — the build manual and definition of done.
 
 To pick a component, start at `packages/components/CATALOG.md`. It is a one-table index of every component: what it is for and what it is explicitly not for. Read it first so you reach for the right component without having to open source files.
 
@@ -183,7 +183,7 @@ npm run gate
 ## Package layout
 
 ```
-AGENTS.md / CLAUDE.md   agent rulebook + map (CLAUDE.md imports AGENTS.md)
+AGENTS.md / CLAUDE.md   agent rulebook + map (CLAUDE.md imports both AGENTS.md files)
 CONTRIBUTING.md         how to add a component + governance
 README.md               this file
 packages/

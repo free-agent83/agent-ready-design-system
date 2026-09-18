@@ -58,3 +58,11 @@ Components are grouped by **what they are for**, because that is how you choose 
 | Grid | stable | Cards, tiles or panels in columns that collapse at a token minimum; responsive by construction. | Tabular data (Table/DataTable), a single column (Stack), or a fixed two-pane frame (AppShell). |
 | Separator | stable | A hairline rule dividing related groups — menu sections, toolbar clusters, list blocks. | Lifting distinct units apart (Card), or mere spacing (use whitespace). |
 | AppShell | stable | The dashboard frame — collapsible sidebar + sticky header + content region. | The screen inside the frame (Page), marketing/content sites, or a single panel (use a Card). |
+
+## System
+
+Not building blocks for a screen: this group holds what declares a gap in the system itself, not something to compose a screen from.
+
+| Component | Status | For | Not for |
+|-----------|--------|-----|---------|
+| Missing | stable | Declaring a genuine gap in the design system: a component or token that does not exist and cannot be composed from what does. Keeps the layout honest, and marks the gap in the DOM. Where a product also runs `undrift gate`, it finds the gap by its JSX tag name in source. | Anything that exists or can be composed from existing components and tokens. Compose it instead; it is a declared gap, never shipped UI. |

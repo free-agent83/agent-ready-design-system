@@ -60,6 +60,10 @@ Every foreground pairs with a surface, and light and dark are symmetric: the sam
 | `info` | blue.950 | blue.400 | `info-foreground` |
 | `info-foreground` | white | black | `info` |
 | `info-subtle` | blue.50 | blue.950 |  |
+| `gap` | magenta.950 | magenta.400 | `gap-foreground` |
+| `gap-foreground` | white | black | `gap` |
+| `gap-subtle` | magenta.50 | magenta.950 |  |
+| `gap-border` | magenta.950 | magenta.400 |  |
 | `chart-1` | indigo.400 | indigo.300 |  |
 | `chart-2` | indigo.600 | blue.400 |  |
 | `chart-3` | indigo.700 | emerald.400 |  |
@@ -101,6 +105,10 @@ Every foreground pairs with a surface, and light and dark are symmetric: the sam
 | `info` | blue.700 | blue.400 | `info-foreground` |
 | `info-foreground` | white | slate.900 | `info` |
 | `info-subtle` | blue.50 | blue.950 |  |
+| `gap` | magenta.700 | magenta.400 | `gap-foreground` |
+| `gap-foreground` | white | slate.900 | `gap` |
+| `gap-subtle` | magenta.50 | magenta.950 |  |
+| `gap-border` | magenta.500 | magenta.400 |  |
 | `chart-1` | indigo.400 | indigo.300 |  |
 | `chart-2` | indigo.500 | indigo.400 |  |
 | `chart-3` | indigo.600 | indigo.500 |  |

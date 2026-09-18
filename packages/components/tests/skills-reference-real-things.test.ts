@@ -32,7 +32,16 @@ const exports = exportedNames();
 const tokensCss = readFileSync(resolve(root, "../tokens/dist/web/tokens.css"), "utf8");
 const deps = new Set(Object.keys({ ...JSON.parse(readFileSync(resolve(root, "package.json"), "utf8")).dependencies, ...JSON.parse(readFileSync(resolve(root, "package.json"), "utf8")).devDependencies }));
 const hooks = readFileSync(resolve(repo, ".claude/settings.json"), "utf8");
-const knownBasenames = new Set(fg.sync(["**/*.md", "**/*.json"], { cwd: repo, ignore: ["**/node_modules/**", "**/dist/**"] }).map((f) => f.split("/").pop()!));
+// A bare filename that every component directory carries (`COMPONENT.md`)
+// names a kind of file, not a path, so it has no single location to check.
+// Derived from the tree rather than listed, and deliberately not "any file with
+// that name anywhere": `CONVENTIONS.md` exists once, inside the components
+// package, and a skill citing it bare sends an agent at the repository root to
+// a file that is not there.
+const componentDirs = fg.sync("src/components/*", { cwd: root, onlyDirectories: true });
+const perComponentFiles = componentDirs
+  .map((dir) => new Set(fg.sync("*", { cwd: resolve(root, dir) })))
+  .reduce((common, files) => new Set([...common].filter((f) => files.has(f))));
 function resolves(name: string): boolean {
   if (/[<>…]/.test(name)) return true; // a placeholder: `<name>.tsx`, `<Missing what="…" />`
   if (/^(npm (run )?[a-z:-]+|undrift [a-z-]+|--strict)$/.test(name)) {
@@ -52,8 +61,10 @@ function resolves(name: string): boolean {
     if (cssVar in tokens || tokensCss.includes(cssVar + ":")) return true; // resolved in the JSON, or a theme role in the CSS
   }
   if (fileShaped) {
-    if (existsSync(resolve(repo, name)) || existsSync(resolve(root, name))) return true;
-    if (!name.includes("/") && knownBasenames.has(name)) return true; // `COMPONENT.md`: a filename that exists somewhere
+    // Skills are read from the repository root, so a path resolves from there
+    // and nowhere else: not from this package, not by its basename.
+    if (existsSync(resolve(repo, name))) return true;
+    if (!name.includes("/") && perComponentFiles.has(name)) return true; // `COMPONENT.md`: a kind of file
   }
   if (tokenShaped || fileShaped) return false;
   if (/^[A-Z][A-Za-z0-9]*$/.test(name)) return exports.has(name) || hooks.includes(name); // a component export, or a hook name
@@ -70,6 +81,12 @@ test("every SKILL.md has a name and a description, and every backticked referenc
   for (const file of skills) {
     const text = readFileSync(file, "utf8");
     if (!/^---\nname: .+\ndescription: .+\n---/m.test(text)) problems.push(`${file}: missing name or description frontmatter`);
+    // The Agent Skills format: the name is the directory's name, lowercase and
+    // hyphenated. Claude Code and Codex both key a skill on it, and a name with
+    // spaces or capitals is not a name either will load.
+    const dir = file.split("/").slice(-2, -1)[0];
+    const name = text.match(/^name: (.+)$/m)?.[1];
+    if (name !== dir || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(name)) problems.push(`${dir}: name \`${name}\` must be \`${dir}\`, lowercase and hyphenated`);
     for (const m of text.matchAll(/`([^`\n]+)`/g)) {
       if (!resolves(m[1])) problems.push(`${file.split("/").slice(-2, -1)[0]}: \`${m[1]}\` does not resolve`);
     }

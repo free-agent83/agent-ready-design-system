@@ -22,3 +22,4 @@ export * from "./components/page/page";
 export * from "./components/section/section";
 export * from "./components/stack/stack";
 export * from "./components/grid/grid";
+export * from "./components/missing/missing";

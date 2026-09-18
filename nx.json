@@ -8,6 +8,16 @@
       "!{projectRoot}/**/*.test-d.ts",
       "!{projectRoot}/**/*.stories.tsx",
       "!{projectRoot}/tests/**/*"
+    ],
+    "componentsTestReadsOutsideProject": [
+      "{workspaceRoot}/.agents/skills/**/*",
+      "{workspaceRoot}/.claude/settings.json",
+      "{workspaceRoot}/package.json",
+      "{workspaceRoot}/packages/undrift/src/gate.mjs",
+      "{workspaceRoot}/packages/tokens/tests/**/*",
+      "{workspaceRoot}/*.md",
+      "{workspaceRoot}/undrift.config.json",
+      "{workspaceRoot}/apps/web/app/**/*"
     ]
   },
   "targetDefaults": {
