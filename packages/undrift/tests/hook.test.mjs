@@ -1,13 +1,8 @@
 // The hook is the mechanism the whole tool exists for: documentation does not
 // produce adherence, enforcement does. These tests pin the three properties
 // that make it usable — it blocks, it never traps, and it stays silent.
-import { expect, test, vi } from "vitest";
+import { expect, test } from "vitest";
 import { execFileSync } from "node:child_process";
-
-// Every test here starts a real `node` process, and some start three in a row.
-// That takes over vitest's 5s default on a shared CI runner, where the two
-// three-spawn tests timed out while passing locally (2026-09-18).
-vi.setConfig({ testTimeout: 30_000 });
 import { mkdtempSync, writeFileSync, mkdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
