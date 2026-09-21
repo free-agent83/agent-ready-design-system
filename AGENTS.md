@@ -8,6 +8,8 @@ A sample of a code-first design system, shared for evaluation by Chris Learey. T
 
 The second one is the easier of the two to miss, and it is the one that shows what the standard looks like applied to somebody else's code.
 
+**The standard is versioned and still evolving.** This repository is its reference implementation and changes as the standard does; it is not a finished product. The design system in it is an example: the idea it demonstrates is that once design decisions are made explicit in code, an agent cannot quietly deviate from them. The current text of the standard is at https://correctby.design/thesis.html.
+
 ---
 
 # AGENTS.md
