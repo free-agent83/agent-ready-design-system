@@ -4,7 +4,7 @@ Correct UI is the default output here rather than something a review has to catc
 
 The contents are an example; the structure is the point. These tokens, the 24 components, the five skills and the three-screen dashboard in `apps/web` stand in for a real product's own. What another system can take from it is the structure: where each kind of decision lives and what checks it. [The framework, and the example](#the-framework-and-the-example) sets out which is which.
 
-This is an evolving standard. The current text is at [correctby.design](https://correctby.design/thesis.html).
+The standard is versioned and still evolving; this repository is its reference implementation, and changes as the standard does. The current text is at [correctby.design](https://correctby.design/thesis.html).
 
 [`examples/specimen-report.html`](examples/specimen-report.html) is the other half: an assessment of a real third-party design system at a stated commit, showing the same standard applied to a codebase built under delivery pressure rather than to this one. [`examples/README.md`](examples/README.md) explains how to read it.
 
