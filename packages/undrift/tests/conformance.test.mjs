@@ -1,5 +1,5 @@
 // The conformance corpus. Each "catches" case is a real evasion observed in
-// production against a regex-based validator (Quartz's) or a plausible
+// use against a regex-based validator, or a plausible
 // near-miss against undrift's own rules; each "allows" case is correct code
 // that must never be flagged, because a gate that cries wolf gets uninstalled.
 //
@@ -46,7 +46,7 @@ test.each([
   // — dimensions —
   ["numeric inline dimension", "const s = <div style={{ padding: 13 }} />;"],
   ["quoted px dimension", 'const s = <div style={{ paddingLeft: "13px" }} />;'],
-  ["unquoted longhand border width (Quartz's real evasion)", "const s = <div style={{ borderTopWidth: 1 }} />;"],
+  ["unquoted longhand border width (an evasion a regex validator missed)", "const s = <div style={{ borderTopWidth: 1 }} />;"],
 
   // — structure —
   ["raw intrinsic element", "const s = <button>Go</button>;"],

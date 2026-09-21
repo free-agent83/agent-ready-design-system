@@ -1,5 +1,5 @@
-// The same screen as an agent drifts it — every classic failure mode from the
-// Basalt reviews and Quartz's production history, seeded deliberately.
+// The same screen as an agent drifts it: every classic failure mode an agent
+// produces against a design system, seeded deliberately.
 // This file is the gate's negative control: the conformance test asserts every
 // seeded violation below is caught, by rule. DO NOT "fix" this file.
 import * as React from "react";
@@ -24,7 +24,7 @@ export function SettingsScreenDrifted() {
         </p>
       </header>
 
-      {/* [seed 7: no-inline-style-values — longhand border-ish numerics, the Quartz evasion] */}
+      {/* [seed 7: no-inline-style-values — longhand border-ish numerics, the longhand evasion] */}
       <div style={{ borderRadius: 8, padding: 14 }}>
         {/* [seed 8: no-raw-elements — raw input] */}
         <input placeholder="Workspace name" />

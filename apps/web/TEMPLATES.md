@@ -2,7 +2,7 @@
 
 A page template is a product's decision: which kinds of screen the product has, and the shape each one takes. A design system cannot make that decision for a product it has never seen, so `@cbd/components` ships no page templates, on purpose. It ships what every template is built from (`Page`, `PageHeader`, `Section`, `Stack`, `Grid`) and the rules they keep (`packages/components/COMPOSITION.md`). This file is where a product records its own.
 
-This application is an example product, a small dashboard, and the table below is its page types. A real product replaces the rows with its own and keeps the shape of the file.
+This application is an example product, a small dashboard, and the table below is its page types. A real product keeps a file like this one with its own page types in it.
 
 ## Where templates sit
 

@@ -1,5 +1,5 @@
 // Evasions, preserved. Every block below is either something a model actually
-// did in production to get past a regex validator (Quartz's), or the nearest
+// has done to get past a regex validator, or the nearest
 // equivalent aimed at undrift's rules. The lesson each one taught:
 //
 //   • Split a banned shorthand into longhand props and the pattern stops
@@ -10,9 +10,8 @@
 //   • Invent a token that looks exactly like a real one — CSS never errors.
 //   • Invent a component name that sounds like it should exist.
 //   • Route around JSX entirely once <button> is blocked.
-//   • Take the carve-out: an escape hatch with no reason attached was, in
-//     production, the cheapest path to "done". (Quartz's `monospace` carve-out
-//     was abused to re-ink a whole screen; it was removed, not narrowed.)
+//   • Take the carve-out: an escape hatch with no reason attached is the
+//     cheapest path to "done", so a carve-out must carry its reason or go.
 //
 // This file must never gate clean. DO NOT "fix" it.
 import * as React from "react";
